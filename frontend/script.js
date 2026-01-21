@@ -22,7 +22,10 @@ function renderTasks(){
 
 function renderTask(task){
     const li = document.createElement("li");
-    li.textContent = `${task.text} (${task.category})`;
+    // li.id = `task-${task.id}`;  // 'task-' prefix to avoid numeric only Id (that might be tricky with CSS selectors)
+    li.dataset.id = task.id;
+    li.innerHTML = `${task.id}.     ${task.text} (${task.category}) 
+                        <button class="delete-btn">X</button>`; //template literal, can put any JS expression, not just variables
 
     taskList.appendChild(li);
 }
@@ -44,6 +47,21 @@ form.addEventListener ("submit", async (event) => {
     });
 
     taskInput.value = "";
+    loadTasks();
+})
+
+taskList.addEventListener("click", async(event) => {
+    if(!event.target.classList.contains("delete-btn"))
+        return;
+
+    const li = event.target.closest("li");
+    const taskId = parseInt(li.dataset.id, 10);    
+
+    console.log(taskId);
+    await fetch(`http://127.0.0.1:5000/tasks/${taskId}`, {
+        method: "DELETE",
+    });
+
     loadTasks();
 })
 

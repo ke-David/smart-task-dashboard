@@ -50,7 +50,7 @@ def add_task():
 
 @app.route('/tasks/<int:task_id>', methods =['DELETE'])
 def delete_task(task_id):
-    conn = sqlite3.connect('backend/tasks.db')
+    conn = sqlite3.connect('backend/data/tasks.db')
     c = conn.cursor()
     c.execute('Delete From tasks Where id = ?', (task_id, ))    # (task_id, ) must be tuple, execute() expects a string + tuple or list
     if c.rowcount == 0:
