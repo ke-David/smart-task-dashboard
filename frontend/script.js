@@ -1,33 +1,24 @@
+import * as api from "./api.js";
+import * as ui from "./ui.js";
+
 const form = document.getElementById("task-form");
 const taskInput = document.getElementById("task-input");
 const categorySelect = document.getElementById("category-select");
 const taskList = document.getElementById("task-list");
+const submitBtn = document.getElementById("submit-btn");
 
 let tasks = [];
 
 //load tasks
-document.addEventListener("DOMContentLoaded", loadTasks);
+document.addEventListener("DOMContentLoaded", refreshTasks);
 
-async function loadTasks(){
-    const res = await fetch("http://127.0.0.1:5000/tasks");
-    tasks = await res.json();
-    renderTasks();
-}
-
-function renderTasks(){
-    taskList.innerHTML = "";
-
-    tasks.forEach(task => renderTask(task));
-}
-
-function renderTask(task){
-    const li = document.createElement("li");
-    // li.id = `task-${task.id}`;  // 'task-' prefix to avoid numeric only Id (that might be tricky with CSS selectors)
-    li.dataset.id = task.id;
-    li.innerHTML = `${task.id}.     ${task.text} (${task.category}) 
-                        <button class="delete-btn">X</button>`; //template literal, can put any JS expression, not just variables
-
-    taskList.appendChild(li);
+async function refreshTasks() {
+    try {
+        tasks = await api.loadTasks();
+        ui.renderTasks(tasks);
+    } catch (err) {
+        alert(err.message);
+    }
 }
 
 form.addEventListener ("submit", async (event) => {
@@ -40,29 +31,41 @@ form.addEventListener ("submit", async (event) => {
 
     const task = {text, category};
 
-    await fetch("http://127.0.0.1:5000/tasks", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(task),
-    });
-
-    taskInput.value = "";
-    loadTasks();
+    try {
+        await api.addTask(task);
+        taskInput.value = "";
+        await refreshTasks();
+    } catch (err) {
+        alert(err.message);
+    }
 })
 
 taskList.addEventListener("click", async(event) => {
     if(!event.target.classList.contains("delete-btn"))
         return;
 
+    if (!confirm("Are you sure you want to delete this task?")) return;
+
     const li = event.target.closest("li");
     const taskId = parseInt(li.dataset.id, 10);    
 
-    console.log(taskId);
-    await fetch(`http://127.0.0.1:5000/tasks/${taskId}`, {
-        method: "DELETE",
-    });
+    try {
+        console.log(taskId);
+    // await fetch(`http://127.0.0.1:5000/tasks/${taskId}`, {
+    //     method: "DELETE",
+    // });
+        await api.deleteTask(taskId);
+        // api.loadTasks();
+        await refreshTasks();
+    } catch (err) {
+        alert(err.message);
+    }
+})
 
-    loadTasks();
+
+taskInput.addEventListener("input", () => {
+  const isEmpty = taskInput.value.trim() === "";
+  submitBtn.disabled = isEmpty;
 })
 
 // form.addEventListener("submit", function (event) {

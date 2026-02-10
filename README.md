@@ -54,4 +54,28 @@ The goal of this project: building something end-to-end using common tools and c
 
 ## Project Structure
 
+
+
+
+######
+# Task Tracker
+
+A simple web application to create and manage daily tasks.
+
+## Features
+- Add and delete tasks
+- Mark tasks as completed
+- Persistent data using localStorage
+
+## Technologies
+- HTML
+- CSS
+- JavaScript
+
+## What I learned
+- DOM manipulation
+- Basic state management
+- Structuring a small project
+- Writing clean and readable code
+
  

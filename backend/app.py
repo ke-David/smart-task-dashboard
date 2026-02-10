@@ -14,51 +14,115 @@ def init_db():
         CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             text TEXT NOT NULL,
-            category TEXT NOT NULL
+            category TEXT NOT NULL,
+            completed INTEGER NOT NULL DEFAULT 0
         )
     ''')
     conn.commit()
     conn.close()
 
-init_db()
+
+def get_db_connection():
+    conn = sqlite3.connect("backend/data/tasks.db")
+    conn.row_factory = sqlite3.Row
+    return conn
+
 
 @app.route('/tasks', methods = ['GET'])
 def get_tasks():
-    conn = sqlite3.connect('backend/data/tasks.db')
-    c = conn.cursor()
-    c.execute('SELECT id, text, category FROM tasks')
-    rows = c.fetchall()
-    conn.close()
+    try:
+        conn = get_db_connection()
+        c = conn.cursor()
+        c.execute('SELECT id, text, category FROM tasks')
+        rows = c.fetchall()
+        conn.close()
 
-    tasks = [{'id': row[0], 'text': row[1], 'category': row[2]} for row in rows]
-    return jsonify(tasks)
+        tasks = [{'id': row[0], 'text': row[1], 'category': row[2]} for row in rows]
+        return jsonify(tasks)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route('/tasks', methods = ['POST'])
 def add_task():
     data = request.get_json()
-    text = data.get('text')
-    category = data.get('category')
 
-    conn = sqlite3.connect('backend/data/tasks.db')
-    c = conn.cursor()
-    c.execute('Insert into tasks (text, category) Values (?, ?)', (text, category)) #prevent SQL injection
-    task_id = c.lastrowid
-    conn.commit()
-    conn.close()
+    if not data:
+        return jsonify({"error": "Missing JSON body"}), 400
 
-    return jsonify({'id': task_id, 'text': text, 'category': category}), 201    # OK, POST created a task
+    text = data.get("text", "").strip()
+    category = data.get("category", "").strip()
+
+    if not text:
+        return jsonify({"error": "Task text is empty"}), 400
+    
+    if not category:
+        return jsonify({"error": "Category is required"}), 400
+
+    try:
+        conn = get_db_connection()
+        c = conn.cursor()
+        c.execute('Insert into tasks (text, category, completed) Values (?, ?, ?)', (text, category, 0)) #prevent SQL injection
+        task_id = c.lastrowid
+        conn.commit()
+        conn.close()
+
+        return jsonify({'id': task_id, 'text': text, 'category': category, 'completed': False}), 201    # OK, POST created a task
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/tasks/<int:task_id>', methods = ['PUT'])
+def update_task(task_id):
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "Missing JSON body"}), 400
+    
+    if "completed" not in data:
+        return jsonify({"error": "Missing completed status"}), 400
+    
+    # if not data or "completed" not in data:
+    #     return jsonify({"error": "Missing completed field"}), 400
+
+    #    completed = 1 if data["completed"] else 0
+
+    if data["completed"]:
+        completed = 1  
+    else: 
+        completed = 0
+
+    try:
+        conn = get_db_connection()
+        c = conn.cursor()
+        c.execute('Update tasks Set completed = ? where id = ?', (completed, task_id)) #prevent SQL injection
+        if c.rowcount == 0:
+                conn.close()
+                return jsonify({"error": "Task not found"}), 404
+        conn.commit()
+        conn.close()
+
+        return jsonify({"message": "Task updated"}), 200
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route('/tasks/<int:task_id>', methods =['DELETE'])
 def delete_task(task_id):
-    conn = sqlite3.connect('backend/data/tasks.db')
-    c = conn.cursor()
-    c.execute('Delete From tasks Where id = ?', (task_id, ))    # (task_id, ) must be tuple, execute() expects a string + tuple or list
-    if c.rowcount == 0:
+    try:
+        conn = get_db_connection()
+        c = conn.cursor()
+        c.execute('Delete From tasks Where id = ?', (task_id, ))    # (task_id, ) must be tuple, execute() expects a string + tuple or list
+        if c.rowcount == 0:
+            conn.close()
+            return jsonify({'error': 'Task not found'}), 404    # error, task ID not found
+        conn.commit()
         conn.close()
-        return jsonify({'error': 'Task not found'}), 404    # error, task ID not found
-    conn.commit()
-    conn.close()
-    return jsonify({'message': 'Task deleted'}), 200  # OK, DELETE success
+        return jsonify({'message': 'Task deleted'}), 200  # OK, DELETE success
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 ##  JSON
 
@@ -75,4 +139,5 @@ def delete_task(task_id):
 #     return jsonify(data), 201
 
 if __name__ == "__main__":
+    init_db()
     app.run(debug=True)
