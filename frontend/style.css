@@ -27,4 +27,15 @@ li {
     padding: 8px;
     border-bottom: 1px solid #ccc;
 }
+
+.task-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.task-item.completed .task-text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
  

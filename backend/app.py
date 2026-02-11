@@ -33,11 +33,11 @@ def get_tasks():
     try:
         conn = get_db_connection()
         c = conn.cursor()
-        c.execute('SELECT id, text, category FROM tasks')
+        c.execute('SELECT id, text, category, completed FROM tasks')
         rows = c.fetchall()
         conn.close()
 
-        tasks = [{'id': row[0], 'text': row[1], 'category': row[2]} for row in rows]
+        tasks = [{'id': row[0], 'text': row[1], 'category': row[2], 'completed': row[3]} for row in rows]
         return jsonify(tasks)
     except Exception as e:
         return jsonify({"error": str(e)}), 500

@@ -12,6 +12,11 @@ let tasks = [];
 //load tasks
 document.addEventListener("DOMContentLoaded", refreshTasks);
 
+taskInput.addEventListener("input", () => {
+  const isEmpty = taskInput.value.trim() === "";
+  submitBtn.disabled = isEmpty;
+})
+
 async function refreshTasks() {
     try {
         tasks = await api.loadTasks();
@@ -62,11 +67,20 @@ taskList.addEventListener("click", async(event) => {
     }
 })
 
+taskList.addEventListener("change", async(event) => {
+    if (!event.target.classList.contains("complete-checkbox")) return;
 
-taskInput.addEventListener("input", () => {
-  const isEmpty = taskInput.value.trim() === "";
-  submitBtn.disabled = isEmpty;
-})
+    const li = event.target.closest("li");
+    const taskId = parseInt(li.dataset.id, 10);
+    const completed = event.target.checked; //boolean
+
+    try {
+        await api.markCompleted(taskId, completed);
+        await refreshTasks();
+    } catch (err) {
+        alert(err.message);
+    }
+});
 
 // form.addEventListener("submit", function (event) {
 //     event.preventDefault();
