@@ -66,3 +66,13 @@ export async function markCompleted(taskId, completed){
     }
 }
 
+export async function loadAnalytics() {
+    const res = await fetch(`${API_BASE}/stats`);
+    
+    if (!res.ok) {
+        throw new Error("Failed to load analytics");
+    }
+
+    return await res.json();
+}
+

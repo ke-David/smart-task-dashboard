@@ -8,6 +8,7 @@ const taskList = document.getElementById("task-list");
 const submitBtn = document.getElementById("submit-btn");
 
 let tasks = [];
+let analyticsData = null;   //object, not array
 
 //load tasks
 document.addEventListener("DOMContentLoaded", refreshTasks);
@@ -21,6 +22,8 @@ async function refreshTasks() {
     try {
         tasks = await api.loadTasks();
         ui.renderTasks(tasks);
+        analyticsData = await api.loadAnalytics();
+        ui.renderCharts(analyticsData);
     } catch (err) {
         alert(err.message);
     }
@@ -76,6 +79,7 @@ taskList.addEventListener("change", async(event) => {
 
     try {
         await api.markCompleted(taskId, completed);
+        // li.classList.toggle("completed", completed);
         await refreshTasks();
     } catch (err) {
         alert(err.message);

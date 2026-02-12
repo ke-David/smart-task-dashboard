@@ -37,7 +37,18 @@ def get_tasks():
         rows = c.fetchall()
         conn.close()
 
+        # tasks = []
+        # for row in c.fetchall():
+        #     task = {
+        #         'id': row[0],
+        #         'text': row[1],
+        #         'category': row[2],
+        #         'completed': row[3]
+        #     }
+        #     tasks.append(task)
+
         tasks = [{'id': row[0], 'text': row[1], 'category': row[2], 'completed': row[3]} for row in rows]
+
         return jsonify(tasks)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -122,6 +133,52 @@ def delete_task(task_id):
         return jsonify({'message': 'Task deleted'}), 200  # OK, DELETE success
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/stats', methods=['GET'])
+def get_stats():
+    try:
+        conn = get_db_connection()
+        c = conn.cursor()
+        c.execute('Select category, Count(*) as count From tasks Group By category')
+        rows = c.fetchall()
+        
+        # to show how many tasks there are per category
+        # tasks_by_category = {row["category"]: row["count"] for row in rows}    #or row[0] and row[1]
+        # tasks_by_category = []
+        # for row in rows:
+            # task = {
+            #     row[0]: row[1],
+            # }
+            # tasks_by_category.append(task)    # wrong because beckend should NOT send an array back, but an object
+
+        tasks_by_category = {}
+        for row in rows:
+            tasks_by_category[row["category"]] = row["count"]
+        
+        # to show how many active vs completed tasks there are
+        c.execute('Select completed, Count(*) as count From tasks Group By completed')
+        rows = c.fetchall()
+        completed_vs_active = {
+            "completed":  0,
+            "active": 0
+        }
+        for row in rows:
+            if row[0] == 1:
+                completed_vs_active['completed'] = row[1]
+            else:
+                completed_vs_active['active'] = row[1]
+
+        conn.close()
+
+        return jsonify({
+            "tasks_by_category": tasks_by_category,
+            "completed_vs_active": completed_vs_active
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
+
 
 
 ##  JSON
