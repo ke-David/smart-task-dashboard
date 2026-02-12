@@ -1,17 +1,19 @@
 # Smart Task Dashboard
 
-A small web app built to refresh and demonstrate core IT BSc skills through a single, coherent project.
+A small web app built to refresh and demonstrate core IT BSc skills through one coherent, end-to-end project.
 
-The goal of this project: building something end-to-end using common tools and concepts expected from a junior IT graduate.
+The goal of this project: building a realistic application using common tools and concepts expected from a junior IT graduate.
 
 
 ## Project Goals
 
 - Refresh frontend development fundamentals
-- Practice backend development with Python
-- Work with data storage
-- Apply Git and GitHub
-- Build a realistic project for job applications
+- Practice backend development with Python and Flask
+- Work with relational databases
+- Apply REST API design principles
+- Apply Git and GitHub workflows
+- Build a simple web application to create and manage daily tasks.
+
 
 
 ## Technologies Used
@@ -20,62 +22,125 @@ The goal of this project: building something end-to-end using common tools and c
 - HTML
 - CSS
 - JavaScript
+- Chart.js (analytics visualization)
 
-### Backend (planned)
+### Backend
 - Python
 - Flask
 
-### Database (planned)
+### Database
 - SQLite
 
-### Other
-- Git, GitHub
+### Development & Tools
+- Git
+- GitHub
 - REST APIs
-- Basic data analysis
-- Simple ML logic (let's see)
+- Virtual environments (venv)
+- Basic data aggregation and analytics
 
 
 ## Features
 
-### Current (Day 1)
-- Add tasks with a category
-- Display task list dynamically in the browser
-- Simple UI
-- Frontend only (no backend yet)
+### Task Management
+- Create tasks with categories
+- Display tasks dynamically
+- Delete tasks
+- Mark tasks as completed
+- Persistent storage using SQLite
+- Input validation and error handling
 
-### Planned
-- Backend API for tasks (CRUD)
-- Persistent storage with SQLite
-- Task completion and deletion
-- Basic analytics (task counts, completion stats)
-- Task priority prediction (lets's see)
-- Deployment
+### Backend API (REST)
+- `GET /tasks` – Return all tasks
+- `POST /tasks` – Create a new task
+- `PUT /tasks/<id>` – Update task (mark as done)
+- `DELETE /tasks/<id>` – Remove task
+- `GET /stats` – Return aggregated analytics data
+
+### Analytics Dashboard
+- Task count per category
+- Completed vs active tasks
+- Data visualization using Chart.js
+
+### Practices
+- MVC structure in frontend
+- Database initialization
+- Consistent JSON error responses
+- Event delegation in frontend
+- Defensive programming (validation, try/catch)
+
+## Screenshots
+
+
 
 
 ## Project Structure
 
+smart-task-dashboard/
+│
+|--- frontend/
+│  |--- index.html
+│  |--- style.css
+│  |--- script.js
+|  |--- ui.js
+|  |---api.js
+│
+|--- backend/
+│  |--- app.py
+|  |--- requirements.txt
+│  |--- tasks/
+|     |--- tasks.db
+|     |--- tasks.json
+│
+|--- .gitignore
+|--- README.md
 
 
+## How to Run Locally
 
-######
-# Task Tracker
+### 1. Clone the repository
 
-A simple web application to create and manage daily tasks.
+https://github.com/ke-David/smart-task-dashboard.git
+cd smart-task-dashboard
 
-## Features
-- Add and delete tasks
-- Mark tasks as completed
-- Persistent data using localStorage
+### 2. Create and activate virtual environment
 
-## Technologies
-- HTML
-- CSS
-- JavaScript
+python -m venv venv
+venv\Scripts\activate
+
+### 3. Install dependencies
+
+pip install -r backend/requirements.txt
+
+### 4. Run the backend server
+
+python backend/app.py
+
+Backend runs at:
+http://127.0.0.1:5000
+
+### 5. Open frontend
+
+Open frontend/index.html in your browser.
+
 
 ## What I learned
-- DOM manipulation
-- Basic state management
-- Structuring a small project
-- Writing clean and readable code
+
+- Designing and implementing REST APIs
+- Connecting frontend and backend systems
+- Working with SQLite databases
+- Handling asynchronous JavaScript requests
+- Debugging CORS and network issues (ex when i swiched to modules)
+- Structuring a small full-stack project
+- Writing clean, readable, and maintainable code
+- Using Git for development
+
+## Future Improvements
+
+- Task filtering and sorting
+- Completion timestamps (and analytics using timestamps)
+- Deployment to cloud
+- Unit test for backend routes
+- Ppriority prediction using basic ML
+- Nicer UI
 
  
