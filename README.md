@@ -70,7 +70,7 @@ The goal of this project: building a realistic application using common tools an
 
 ## Screenshots
 
-
+..
 
 
 ## Project Structure

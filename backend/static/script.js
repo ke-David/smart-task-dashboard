@@ -1,5 +1,6 @@
 import * as api from "./api.js";
 import * as ui from "./ui.js";
+import * as celebration from "./celebration.js";
 
 const form = document.getElementById("task-form");
 const taskInput = document.getElementById("task-input");
@@ -81,6 +82,11 @@ taskList.addEventListener("change", async(event) => {
         await api.markCompleted(taskId, completed);
         // li.classList.toggle("completed", completed);
         await refreshTasks();
+
+        if (completed === true) {
+            await new Promise(r => requestAnimationFrame(r));
+            celebration.ultimateCelebration();
+        }
     } catch (err) {
         alert(err.message);
     }

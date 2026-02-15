@@ -1,0 +1,120 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input, select, button {
+    padding: 8px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
+
+.task-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* overlay */
+
+#overlay-root {
+    position: fixed;
+    inset: 0;   /* top, left, rith, bottom = 0 */
+    pointer-events: none;   /* overlay does not block clicks by the user */
+    z-index: 9999;
+}
+
+/* celebration */
+ 
+.hidden {
+    display: none;  /* the element not rendered at all */
+    /* opacity: 0;*/  /* even if i dont see it, it is rendered every single time */
+    /* pointer-events: none; */
+}
+
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -40px);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+.show-banner {
+    animation: slideDown 1.0s ease;
+}
+
+#celebration-banner {
+    position: fixed;  /* fixed to the screen, not tothe layout*/
+    top: 20px;   
+    left: 50%;    /* moves the banner's left side to the middle of the screen */
+    transform: translate(-50%, 0);  /* it moves the banner left by half of its own width. */
+    background: gold;
+    padding: 15px 25px;
+    font-weight: bold;
+    border-radius: 8px;
+    z-index: 1000;    /* appears above everything */
+    /* animation: slideDown 1.0s ease; */
+    /* animation-fill-mode: forwards; */
+}
+
+#meme-overlay {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translate(10%, 0);
+    width: 700px;
+    opacity: 0;
+    z-index: 9998;
+    pointer-events: none;
+}
+
+@keyframes memeFade {
+    0% {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+    15% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.2);
+    }
+}
+
+
+.show-meme {
+    animation: memeFade 4s ease forwards;
+}
