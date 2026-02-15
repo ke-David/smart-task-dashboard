@@ -3,9 +3,16 @@ export function ultimateCelebration() {
     showCelebrationBanner();
     showMeme();
 //   celebrateCompletion();
-//   playSuccessSound();
+    // playSuccessSound();
 //   fireConfetti();
 //   showMeme();
+}
+
+function playSuccessSound() {
+    const audio = new Audio("sounds/success.mp3");
+    audio.volume = 0.6;
+    audio.currentTime = 0; // allows rapid replay
+    audio.play().catch(() => {});
 }
 
 function showCelebrationBanner() {
@@ -42,14 +49,21 @@ function showCelebrationBanner() {
 //   }, 4000);
 // }
 
+let memeTimer;
+
+
 function showMeme() {
     const meme = document.getElementById("meme-overlay");
 
+
     meme.classList.remove("hidden");
+    meme.classList.remove("show-meme");
+
+    void meme.offsetWidth;  // resets animation, so it s guaranteed it will play every time
     meme.classList.add("show-meme");
 
-    setTimeout(() => {
+    memeTimer = setTimeout(() => {
         meme.classList.add("hidden");
         meme.classList.remove("show-meme");
-    }, 4000);
+    }, 4500);
 }

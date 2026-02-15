@@ -80,23 +80,23 @@ li {
     padding: 15px 25px;
     font-weight: bold;
     border-radius: 8px;
-    z-index: 1000;    /* appears above everything */
+    /* z-index: 1000;    appears above everything */
     /* animation: slideDown 1.0s ease; */
     /* animation-fill-mode: forwards; */
 }
 
-#meme-overlay {
+/* #meme-overlay {
     position: fixed;
-    bottom: 50px;
-    left: 50%;
-    transform: translate(10%, 0);
+    top: 80px;
+    bottom: 10px;
+    transform: translate(50%, 0) scale(0.6);
     width: 700px;
     opacity: 0;
-    z-index: 9998;
-    pointer-events: none;
-}
+    /* z-index: 9998; */
+    /* pointer-events: none; 
+} */
 
-@keyframes memeFade {
+/* @keyframes memeFade {
     0% {
         opacity: 0;
         transform: scale(0.6);
@@ -112,9 +112,94 @@ li {
         opacity: 0;
         transform: scale(1.2);
     }
+} */
+
+/* @keyframes memeFade {
+    0% {
+        opacity: 0;
+        transform: translate(40%, 0) scale(0.6);
+    }
+
+    20% {
+        opacity: 0.75;
+        transform: translate(40%, 0) scale(0.8);
+    }
+
+    50% {
+        opacity: 0.85;
+        transform: translate(40%, 0) scale(1);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translate(40%, 0) scale(1.2);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translate(40%, 0) scale(0.85);
+    }
+
+    90% {
+        opacity: 0.5;
+        transform: translate(40%, 0) scale(0.65);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(50%, 0) scale(0.45);
+    }
+} */
+
+
+/* .show-meme {
+    animation: memeFade 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+} */
+
+#meme-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%) scale(0.65);
+
+    width: 650px;
+    opacity: 0;
+    filter: blur(4px);
+
+    z-index: 9998;
+    pointer-events: none;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.35);
+    border-radius: 10px;
 }
 
+@keyframes memeFloat {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.65);
+        filter: blur(4px);
+    }
 
+    30% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.95);
+        filter: blur(1px);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.05);
+        filter: blur(0px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.2);
+        filter: blur(5px);
+    }
+}
+
+/* Apply animation */
 .show-meme {
-    animation: memeFade 4s ease forwards;
+    animation: memeFloat 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
