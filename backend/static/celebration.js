@@ -2,14 +2,29 @@
 export function ultimateCelebration() {
     showCelebrationBanner();
     showMeme();
-//   celebrateCompletion();
-    // playSuccessSound();
-//   fireConfetti();
-//   showMeme();
+    playSuccessSound();
+    fireConfetti();
+}
+
+function fireConfetti() {
+    confetti({
+        particleCount: 200,
+        spread: 120,
+        startVelocity: 45,
+        origin: { y: 0.6 }
+    });
+
+    setTimeout(() => {
+        confetti({
+            particleCount: 150,
+            spread: 160,
+            origin: { y: 0.3 }
+        });
+    }, 250);
 }
 
 function playSuccessSound() {
-    const audio = new Audio("sounds/success.mp3");
+    const audio = new Audio("static/sounds/gatsby.mp3");
     audio.volume = 0.6;
     audio.currentTime = 0; // allows rapid replay
     audio.play().catch(() => {});
