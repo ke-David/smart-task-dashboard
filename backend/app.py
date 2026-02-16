@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 import sqlite3
 
@@ -27,6 +27,9 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+@app.route("/")
+def home():
+    return render_template("index.html")
 
 @app.route('/tasks', methods = ['GET'])
 def get_tasks():
