@@ -1,9 +1,36 @@
 
+let celebrationIndex = 0;
+
+
+const celebrations = [
+    {
+        banner: "🎉 TASK COMPLETED! YOU ABSOLUTE MACHINE 🔥",
+        meme: "static/pictures/dicaprio.png",
+        sound: "static/sounds/gatsby.mp3"
+    },
+    {
+        banner: "💪 WELL DONE! 🙌",
+        meme: "static/pictures/dance.gif",
+        sound: "static/sounds/dance.mp3"
+    },
+    {
+        banner: "🐊 JUST A COOL CROC BECAUSE YOU DESERVE IT 🐊",
+        meme: "static/pictures/crocodile.jpg",
+        sound: "static/sounds/hawaii.mp3"
+    }
+];
+
 export function ultimateCelebration() {
-    showCelebrationBanner();
-    showMeme();
-    playSuccessSound();
+
+    // const current = celebrations[Math.floor(Math.random() * celebrations.length)];
+    const current = celebrations[celebrationIndex];
+
+    showCelebrationBanner(current.banner);
+    showMeme(current.meme);
+    playSuccessSound(current.sound);
     fireConfetti();
+
+    celebrationIndex = (celebrationIndex + 1) % celebrations.length;
 }
 
 function fireConfetti() {
@@ -23,15 +50,16 @@ function fireConfetti() {
     }, 250);
 }
 
-function playSuccessSound() {
-    const audio = new Audio("static/sounds/gatsby.mp3");
+function playSuccessSound(src) {
+    const audio = new Audio(src);
     audio.volume = 0.6;
     audio.currentTime = 0; // allows rapid replay
     audio.play().catch(() => {});
 }
 
-function showCelebrationBanner() {
+function showCelebrationBanner(text) {
     const banner = document.getElementById("celebration-banner");
+    banner.textContent = text;
 
     banner.classList.remove("hidden");
     // void banner.offsetWidth; // forces reflow
@@ -67,9 +95,9 @@ function showCelebrationBanner() {
 let memeTimer;
 
 
-function showMeme() {
+function showMeme(src) {
     const meme = document.getElementById("meme-overlay");
-
+    meme.src = src;
 
     meme.classList.remove("hidden");
     meme.classList.remove("show-meme");
