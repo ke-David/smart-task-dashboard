@@ -203,3 +203,63 @@ li {
 .show-meme {
     animation: memeFloat 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
+
+/* toggle switch */
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* switch container */
+.switch {
+    position: relative; /*because the slider inside uses position:absolute */
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+/* hide default checkbox */
+.switch input {
+    opacity: 0; /* gets hidden, but still functional */
+    width: 0;
+    height: 0;
+}
+
+/* slider background */
+.slider {
+    position: absolute;
+    cursor: pointer; /* its clickable */
+    inset: 0;   /* fills entire switch container*/
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: 0.3s;
+}
+
+/* slider circle */
+.slider::before {   /* Create a virtual element before the content inside .slider, i cant see it in html but css can style it somehow */
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+/* checked state */
+input:checked + .slider {   /* State selector + sibling selector, like select checkbox when it s ON + select next sibling element (only the one next to it)*/
+    background-color: #4CAF50;
+}
+
+input:checked + .slider::before {   /* when checkbox is checked, select the slider, then select the slider’s fake circle, move it*/
+    transform: translateX(24px);
+}
+
+.toggle-label {
+    font-size: 14px;
+}

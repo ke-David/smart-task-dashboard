@@ -8,6 +8,9 @@ const categorySelect = document.getElementById("category-select");
 const taskList = document.getElementById("task-list");
 const submitBtn = document.getElementById("submit-btn");
 
+const toggle = document.getElementById("celebration-toggle");
+toggle.checked = localStorage.getItem("celebrationsEnabled") !== "false";   //without it, when i reload the page, the toggle will not show the real value (UI and logic become out of sync)
+
 let tasks = [];
 let analyticsData = null;   //object, not array
 
@@ -90,6 +93,10 @@ taskList.addEventListener("change", async(event) => {
     } catch (err) {
         alert(err.message);
     }
+});
+
+toggle.addEventListener("change", () => {
+    localStorage.setItem("celebrationsEnabled", toggle.checked);
 });
 
 // form.addEventListener("submit", function (event) {

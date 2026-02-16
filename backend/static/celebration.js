@@ -1,7 +1,6 @@
 
 let celebrationIndex = 0;
-
-
+const toggle = document.getElementById("celebration-toggle");
 const celebrations = [
     {
         banner: "🎉 TASK COMPLETED! YOU ABSOLUTE MACHINE 🔥",
@@ -20,7 +19,10 @@ const celebrations = [
     }
 ];
 
+
 export function ultimateCelebration() {
+
+    if (!celebrationsEnabled()) return;
 
     // const current = celebrations[Math.floor(Math.random() * celebrations.length)];
     const current = celebrations[celebrationIndex];
@@ -31,6 +33,10 @@ export function ultimateCelebration() {
     fireConfetti();
 
     celebrationIndex = (celebrationIndex + 1) % celebrations.length;
+}
+
+function celebrationsEnabled() {
+    return localStorage.getItem("celebrationsEnabled") !== "false";
 }
 
 function fireConfetti() {
