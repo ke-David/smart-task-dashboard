@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Smart Task Dashboard</title>
     <!-- <link rel="stylesheet" href="style.css"> -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleTasks.css') }}">
 </head>
 <body>
 
@@ -37,14 +37,7 @@
 
         <ul id="task-list"></ul>
 
-        <!-- analytics -->
-        <div id="analytics">
-            <h3>Tasks per Category</h3>
-            <canvas id="categoryChart"></canvas>
-
-            <h3>Completed vs Active</h3>
-            <canvas id="statusChart"></canvas>
-        </div>
+        
     </div>
 
     <div id="overlay-root">
@@ -64,7 +57,7 @@
     <!-- <script src="script.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <script type="module" src="script.js"></script> -->
-    <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='tasks.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
 </html>

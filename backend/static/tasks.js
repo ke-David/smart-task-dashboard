@@ -12,7 +12,6 @@ const toggle = document.getElementById("celebration-toggle");
 toggle.checked = localStorage.getItem("celebrationsEnabled") !== "false";   //without it, when i reload the page, the toggle will not show the real value (UI and logic become out of sync)
 
 let tasks = [];
-let analyticsData = null;   //object, not array
 
 //load tasks
 document.addEventListener("DOMContentLoaded", refreshTasks);
@@ -26,8 +25,6 @@ async function refreshTasks() {
     try {
         tasks = await api.loadTasks();
         ui.renderTasks(tasks);
-        analyticsData = await api.loadAnalytics();
-        ui.renderCharts(analyticsData);
     } catch (err) {
         alert(err.message);
     }
