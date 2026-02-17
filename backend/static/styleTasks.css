@@ -263,3 +263,109 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
 .toggle-label {
     font-size: 14px;
 }
+
+#add-board-card {
+    min-width: 280px;
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+#add-board-card:hover {
+    background: #f9f9f9;
+}
+
+/* #board-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px;
+}
+
+.board {
+    min-width: 280px;
+    background: #f4f4f4;
+    border-radius: 12px;
+    padding: 15px;
+    flex-shrink: 0;
+}
+
+.board h3 {
+    margin-top: 0;
+} */
+
+
+/* Board container (horizontal scroll layout) */
+/* #board-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px;
+} */
+
+/* Each column */
+/* .column {
+    min-width: 280px;
+    background: #f4f4f4;
+    border-radius: 12px;
+    padding: 15px;
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+} */
+
+/* Column title */
+/* .column-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+} */
+
+/* Task card */
+/* .task-card {
+    background: white;
+    border-radius: 10px;
+    padding: 10px 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+} */
+
+/* Hover effect */
+/* .task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+} */
+
+/* Completed state */
+/* .task-card.completed {
+    opacity: 0.6;
+    text-decoration: line-through;
+} */
+
+/* Text container */
+/* .task-info {
+    flex-grow: 1;
+} */
+
+/* Delete button */
+/* .delete-btn {
+    background: transparent;
+    border: none;
+    color: crimson;
+    font-weight: bold;
+    cursor: pointer;
+} */
+
+

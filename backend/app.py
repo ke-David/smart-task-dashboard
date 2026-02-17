@@ -10,13 +10,23 @@ CORS(app)
 def init_db():
     conn = sqlite3.connect('backend/data/tasks.db')
     c = conn.cursor()
+    c.execute('''      
+        CREATE TABLE IF NOT EXISTS boards (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            position INTEGER DEFAULT 0
+        );
+    ''')
     c.execute('''
         CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             text TEXT NOT NULL,
             category TEXT NOT NULL,
-            completed INTEGER NOT NULL DEFAULT 0
-        )
+            completed INTEGER NOT NULL DEFAULT 0,
+            board_id INTEGER NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(board_id) REFERENCES boards(id)
+        );
     ''')
     conn.commit()
     conn.close()
@@ -27,13 +37,16 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
 @app.route("/")
 def tasks_page():
     return render_template("tasks.html")
 
+
 @app.route("/analytics")
 def analytics_page():
     return render_template("analytics.html")
+
 
 @app.route('/tasks', methods = ['GET'])
 def get_tasks():
@@ -141,6 +154,7 @@ def delete_task(task_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @app.route('/stats', methods=['GET'])
 def get_stats():
     try:
@@ -185,6 +199,43 @@ def get_stats():
         return jsonify({"error": str(e)}), 500
     
 
+@app.route("/boards", methods=["POST"])
+def add_board():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Missing JSON body"}), 400
+    
+    title = data.get("title", "").strip()
+    if not title:
+        return jsonify({"error": "Title required"}), 400
+
+    try:
+        conn = get_db_connection()
+        c = conn.cursor()
+        c.execute("INSERT INTO boards (title) VALUES (?)", (title,)) 
+        id = c.lastrowid
+        conn.commit()
+        conn.close()
+
+        return jsonify({'id': id, 'title': title}), 201    # OK, POST created a task
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
+@app.route("/boards", methods=["GET"])
+def get_boards():
+    try:
+        conn = get_db_connection()
+        c = conn.cursor()
+        c.execute('SELECT * FROM boards ORDER BY id')
+        rows = c.fetchall()
+        conn.close()
+
+        boards = [{'id': row[0], 'title': row[1], 'position': row[2]} for row in rows]
+
+        return jsonify(boards)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 

@@ -7,14 +7,19 @@ const taskInput = document.getElementById("task-input");
 const categorySelect = document.getElementById("category-select");
 const taskList = document.getElementById("task-list");
 const submitBtn = document.getElementById("submit-btn");
+const addBoardCard = document.getElementById("add-board-card");
 
 const toggle = document.getElementById("celebration-toggle");
 toggle.checked = localStorage.getItem("celebrationsEnabled") !== "false";   //without it, when i reload the page, the toggle will not show the real value (UI and logic become out of sync)
 
 let tasks = [];
+let boards = [];
 
-//load tasks
-document.addEventListener("DOMContentLoaded", refreshTasks);
+//load tasks n boards
+document.addEventListener("DOMContentLoaded", async () => {
+    await refreshBoards();
+    await refreshTasks();
+});
 
 taskInput.addEventListener("input", () => {
   const isEmpty = taskInput.value.trim() === "";
@@ -95,6 +100,39 @@ taskList.addEventListener("change", async(event) => {
 toggle.addEventListener("change", () => {
     localStorage.setItem("celebrationsEnabled", toggle.checked);
 });
+
+async function refreshBoards() {
+    try {
+        boards = await api.loadBoards();
+        ui.renderBoards(boards);
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+addBoardCard.addEventListener("click", () => {
+    // Prevent multiple inputs
+    if (addBoardCard.querySelector("input")) return;
+
+    const input = document.createElement("input");
+    input.placeholder = "New board...";
+    addBoardCard.appendChild(input);
+    input.focus();
+
+    input.addEventListener("keydown", async (e) => {
+        if (e.key !== "Enter") return;
+
+        const title = input.value.trim();
+        if (!title) return;
+
+        await api.addBoard(title);  
+        input.remove();
+
+        refreshBoards(); 
+    });
+});
+
+
 
 // form.addEventListener("submit", function (event) {
 //     event.preventDefault();

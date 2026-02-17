@@ -1,4 +1,5 @@
 const taskList = document.getElementById("task-list");
+const boardContainer = document.getElementById("board-container");
 let categoryChartInstance;
 let statusChartInstance;
 
@@ -62,4 +63,22 @@ export function renderCharts(data){
         alert("Failed to load analytics");
     }
     
+}
+
+export function renderBoards(boards) {
+    boardContainer.innerHTML = "";
+    boards.forEach(renderBoard)
+}
+
+function renderBoard (board){
+    const column = document.createElement("div");
+    column.classList.add("column");
+    column.dataset.id = board.id;
+
+    column.innerHTML = `
+        <div class="column-title">${board.title}</div>
+        <div class="card-container"></div>
+    `;
+
+    boardContainer.appendChild(column);
 }
