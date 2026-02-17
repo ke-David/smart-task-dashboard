@@ -134,6 +134,8 @@ Open frontend/index.html in your browser.
 - Writing clean, readable, and maintainable code
 - Using Git for development
 
+## Feature branch
+
 ## Future Improvements
 
 - Task filtering and sorting

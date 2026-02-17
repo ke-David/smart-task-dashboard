@@ -28,8 +28,12 @@ def get_db_connection():
     return conn
 
 @app.route("/")
-def home():
-    return render_template("index.html")
+def tasks_page():
+    return render_template("tasks.html")
+
+@app.route("/analytics")
+def analytics_page():
+    return render_template("analytics.html")
 
 @app.route('/tasks', methods = ['GET'])
 def get_tasks():
