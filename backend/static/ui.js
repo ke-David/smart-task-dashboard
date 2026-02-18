@@ -77,15 +77,45 @@ function renderBoard (board){
 
     boardDiv.innerHTML = `
         <div class="board-title">${board.title}</div>
-        <div class="card-container"></div>
-        <button id="add-card-btn">
-            + Add Card
-        </button>
+        <div class="task-container"></div>
+        <button class="add-task-btn">+ Add Task</button>
     `;
+
+    const taskContainer = boardDiv.querySelector(".task-container");
+
+    // board.tasks just as board.id is from the json
+    board.tasks.forEach(task => {
+        taskContainer.appendChild(renderBoardTask(task));
+    });
 
     boardContainer.appendChild(boardDiv);
 }
 
+function renderBoardTask(task) {
+    const card = document.createElement("div");
+    card.className = "task-card";
+    card.dataset.id = task.id;  `task-${task.id}`;  // 'task-' prefix to avoid numeric only Id (that might be tricky with CSS selectors)
+
+    if (task.completed === 1) {
+        card.classList.add("completed");
+        //   console.log("hehh")
+    }
+
+    card.innerHTML = `
+        <div class="task-info">
+            <span class="task-text">
+                <strong>${task.text}</strong>
+            </span>
+            <span class="task-category">
+                <small>(${task.category})</small>
+            </span>
+        </div>
+        <input type="checkbox" class="complete-checkbox" ${task.completed ? "checked" : ""}>
+        <button class="delete-btn">✕</button>
+    `;
+
+    return card;
+}
 
 
 

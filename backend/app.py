@@ -53,7 +53,7 @@ def get_tasks():
     try:
         conn = get_db_connection()
         c = conn.cursor()
-        c.execute('SELECT id, text, category, completed FROM tasks')
+        c.execute('SELECT id, text, category, completed, board_id FROM tasks')
         rows = c.fetchall()
         conn.close()
 
@@ -67,7 +67,7 @@ def get_tasks():
         #     }
         #     tasks.append(task)
 
-        tasks = [{'id': row[0], 'text': row[1], 'category': row[2], 'completed': row[3]} for row in rows]
+        tasks = [{'id': row[0], 'text': row[1], 'category': row[2], 'completed': row[3], 'boardId': row[4]} for row in rows]
 
         return jsonify(tasks)
     except Exception as e:
@@ -83,22 +83,26 @@ def add_task():
 
     text = data.get("text", "").strip()
     category = data.get("category", "").strip()
+    boardId = data.get("boardId")
 
     if not text:
         return jsonify({"error": "Task text is empty"}), 400
     
     if not category:
         return jsonify({"error": "Category is required"}), 400
+    
+    if not boardId:
+        return jsonify({"error": "BoardId is required"}), 400
 
     try:
         conn = get_db_connection()
         c = conn.cursor()
-        c.execute('Insert into tasks (text, category, completed) Values (?, ?, ?)', (text, category, 0)) #prevent SQL injection
+        c.execute('Insert into tasks (text, category, completed, board_id) Values (?, ?, ?, ?)', (text, category, 0, boardId)) #prevent SQL injection
         task_id = c.lastrowid
         conn.commit()
         conn.close()
 
-        return jsonify({'id': task_id, 'text': text, 'category': category, 'completed': False}), 201    # OK, POST created a task
+        return jsonify({'id': task_id, 'text': text, 'category': category, 'completed': False, 'boardId': boardId}), 201    # OK, POST created a task
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -234,6 +238,55 @@ def get_boards():
         boards = [{'id': row[0], 'title': row[1], 'position': row[2]} for row in rows]
 
         return jsonify(boards)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
+@app.route("/boardTasks", methods=["GET"])
+def get_boards_with_tasks():
+    try:
+        conn = get_db_connection()
+        c = conn.cursor()
+
+        c.execute("""
+            SELECT
+                b.id   AS board_id,
+                b.title,
+                b.position,
+                t.id   AS task_id,
+                t.text,
+                t.category,
+                t.completed
+            FROM boards b
+            LEFT JOIN tasks t ON t.board_id = b.id
+            ORDER BY b.id, t.id
+        """)
+        # left join bc there are empty boards as well
+
+        rows = c.fetchall()
+        conn.close()
+
+        boards = {}
+        for row in rows:
+            board_id = row["board_id"]
+
+            if board_id not in boards:
+                boards[board_id] = {
+                    "id": board_id,
+                    "title": row["title"],
+                    "position": row["position"],
+                    "tasks": []
+                }
+
+            if row["task_id"] is not None:
+                boards[board_id]["tasks"].append({
+                    "id": row["task_id"],
+                    "text": row["text"],
+                    "category": row["category"],
+                    "completed": row["completed"]
+                })
+
+        return jsonify(list(boards.values()))
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

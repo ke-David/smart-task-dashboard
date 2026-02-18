@@ -281,6 +281,17 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
     background: #f9f9f9;
 }
 
+.inline-board-form{
+    min-width: 80px;
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
 /* #boards-wrapper {
     overflow-x: auto;
     display: flex;
@@ -290,6 +301,7 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
 #board-container {
     display: flex;
     gap: 20px;
+    align-items: flex-start;
 }
 
 /* Board container (horizontal scroll layout) */
@@ -303,14 +315,16 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
 
 /* Each board */
 .board {
+    width: fit-content;
     min-width: 280px;
     background: #f4f4f4;
     border-radius: 12px;
     padding: 15px;
     flex-shrink: 0;
+    align-self: flex-start; /* don’t stretch */
 
     display: flex;
-    flex-direction: board;
+    flex-direction: column;
     gap: 12px;
 }
 
@@ -327,7 +341,7 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
 
 /* Task card */
 
-#add-card-btn{
+.add-card-btn{
     min-width: 80px;
     border: 2px dashed #ccc;
     border-radius: 12px;
@@ -338,11 +352,11 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
     transition: 0.2s;
 }
 
-#add-card-btn:hover {
+.add-card-btn:hover {
     background: #f9f9f9;
 }
 
-/* .task-card {
+.task-card {
     background: white;
     border-radius: 10px;
     padding: 10px 12px;
@@ -354,32 +368,37 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
     gap: 8px;
 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-} */
+}
 
 /* Hover effect */
-/* .task-card:hover {
+.task-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 18px rgba(0,0,0,0.12);
-} */
+}
 
 /* Completed state */
-/* .task-card.completed {
+.task-card.completed .task-text{
     opacity: 0.6;
     text-decoration: line-through;
-} */
+}
+
+.task-card.completed .task-category{
+    opacity: 0.6;
+    text-decoration: line-through;
+}
 
 /* Text container */
-/* .task-info {
+.task-info {
     flex-grow: 1;
-} */
+}
 
 /* Delete button */
-/* .delete-btn {
+.delete-btn {
     background: transparent;
     border: none;
     color: crimson;
     font-weight: bold;
     cursor: pointer;
-} */
+}
 
 

@@ -76,3 +76,11 @@ export async function addBoard(title) {
     if (!res.ok) throw new Error("Create board failed");
 }
 
+export async function loadBoardTasks() {
+    const res = await fetch(`${API_BASE}/boardTasks`);
+
+    if (!res.ok) throw new Error("Failed to load boardTasks");
+
+    return await res.json();
+}
+
