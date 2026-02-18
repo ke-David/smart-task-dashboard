@@ -71,14 +71,74 @@ export function renderBoards(boards) {
 }
 
 function renderBoard (board){
-    const column = document.createElement("div");
-    column.classList.add("column");
-    column.dataset.id = board.id;
+    const boardDiv = document.createElement("div");
+    boardDiv.classList.add("board");
+    boardDiv.dataset.id = board.id;
 
-    column.innerHTML = `
-        <div class="column-title">${board.title}</div>
+    boardDiv.innerHTML = `
+        <div class="board-title">${board.title}</div>
         <div class="card-container"></div>
+        <button id="add-card-btn">
+            + Add Card
+        </button>
     `;
 
-    boardContainer.appendChild(column);
+    boardContainer.appendChild(boardDiv);
 }
+
+
+
+
+// export function renderBoards(tasks) {
+//     const container = document.getElementById("board-container");
+//     container.innerHTML = "";
+
+//     // group tasks by category
+//     const grouped = {};
+
+//     tasks.forEach(task => {
+//         if (!grouped[task.category]) {
+//             grouped[task.category] = [];
+//         }
+//         grouped[task.category].push(task);
+//     });
+
+//     // create column per category
+//     Object.entries(grouped).forEach(([category, categoryTasks]) => {
+
+//         const column = document.createElement("div");
+//         column.classList.add("column");
+
+//         const title = document.createElement("div");
+//         title.classList.add("column-title");
+//         title.textContent = category;
+
+//         column.appendChild(title);
+
+//         categoryTasks.forEach(task => {
+//             column.appendChild(createTaskCard(task));
+//         });
+
+//         container.appendChild(column);
+//     });
+// }
+
+// function createTaskCard(task) {
+//     const card = document.createElement("div");
+//     card.classList.add("task-card");
+//     card.dataset.id = task.id;
+
+//     if (task.completed) {
+//         card.classList.add("completed");
+//     }
+
+//     card.innerHTML = `
+//         <div class="task-info">
+//             <span>${task.text}</span>
+//         </div>
+//         <button class="delete-btn">X</button>
+//         <input type="checkbox" class="complete-checkbox" ${task.completed ? "checked" : ""}>
+//     `;
+
+//     return card;
+// }

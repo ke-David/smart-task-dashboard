@@ -7,7 +7,8 @@ const taskInput = document.getElementById("task-input");
 const categorySelect = document.getElementById("category-select");
 const taskList = document.getElementById("task-list");
 const submitBtn = document.getElementById("submit-btn");
-const addBoardCard = document.getElementById("add-board-card");
+const addBoardBtn = document.getElementById("add-board-btn");
+const addCardBtn = document.getElementById("add-card-btn");
 
 const toggle = document.getElementById("celebration-toggle");
 toggle.checked = localStorage.getItem("celebrationsEnabled") !== "false";   //without it, when i reload the page, the toggle will not show the real value (UI and logic become out of sync)
@@ -60,7 +61,8 @@ taskList.addEventListener("click", async(event) => {
 
     if (!confirm("Are you sure you want to delete this task?")) return;
 
-    const li = event.target.closest("li");
+    // const li = event.target.closest("li");
+    const card = event.target.closest(".task-card");
     const taskId = parseInt(li.dataset.id, 10);    
 
     try {
@@ -79,7 +81,8 @@ taskList.addEventListener("click", async(event) => {
 taskList.addEventListener("change", async(event) => {
     if (!event.target.classList.contains("complete-checkbox")) return;
 
-    const li = event.target.closest("li");
+    // const li = event.target.closest("li");
+    const card = event.target.closest(".task-card");
     const taskId = parseInt(li.dataset.id, 10);
     const completed = event.target.checked; //boolean
 
@@ -110,13 +113,13 @@ async function refreshBoards() {
     }
 }
 
-addBoardCard.addEventListener("click", () => {
+addBoardBtn.addEventListener("click", () => {
     // Prevent multiple inputs
-    if (addBoardCard.querySelector("input")) return;
+    if (addBoardBtn.querySelector("input")) return;
 
     const input = document.createElement("input");
     input.placeholder = "New board...";
-    addBoardCard.appendChild(input);
+    addBoardBtn.appendChild(input);
     input.focus();
 
     input.addEventListener("keydown", async (e) => {
@@ -133,6 +136,28 @@ addBoardCard.addEventListener("click", () => {
 });
 
 
+
+addCardBtn.addEventListener("click", () => {
+    // Prevent multiple inputs
+    if (addCardBtn.querySelector("input")) return;
+
+    const input = document.createElement("input");
+    input.placeholder = "New card...";
+    addCardBtn.appendChild(input);
+    input.focus();
+
+    input.addEventListener("keydown", async (e) => {
+        if (e.key !== "Enter") return;
+
+        const title = input.value.trim();
+        if (!title) return;
+
+        // await api.addCard(title);  
+        input.remove();
+
+        refreshBoards(); 
+    });
+});
 
 // form.addEventListener("submit", function (event) {
 //     event.preventDefault();
