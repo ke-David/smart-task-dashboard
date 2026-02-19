@@ -3,22 +3,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Smart Task Dashboard</title>
+    <title>Analytics Dashboard</title>
     <!-- <link rel="stylesheet" href="style.css"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styleAnalytics.css') }}">
 </head>
 <body>
-    <button onclick="window.location.href='/'">
-        ← Back to Tasks
-    </button>
-    <!-- analytics -->
-    <div id="analytics">
-        <h3>Tasks per Category</h3>
-        <canvas id="categoryChart"></canvas>
 
-        <h3>Completed vs Active</h3>
-        <canvas id="statusChart"></canvas>
-    </div>
+    <header class="topbar">
+
+        <h1>Analytics Dashboard</h1>
+
+        <button onclick="window.location.href='/'">
+            ← Back to Tasks
+        </button>
+
+    </header>
+
+    <main class="analytics-wrapper">
+
+    <!-- Summary Cards -->
+    <section class="analytics-summary">
+
+        <div class="summary-card">
+            <h3>Total Tasks</h3>
+            <p id="totalTasks">0</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Completed Tasks</h3>
+            <p id="completedTasks">0</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Active Tasks</h3>
+            <p id="activeTasks">0</p>
+        </div>
+
+    </section>
+
+
+    <!-- Charts -->
+    <section class="analytics-charts">
+
+        <div class="chart-card">
+            <h3>Tasks Per Category</h3>
+            <canvas id="categoryChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Completed vs Active</h3>
+            <canvas id="statusChart"></canvas>
+        </div>
+        
+    </section>
+
+</main>
 
     <!-- <script src="script.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

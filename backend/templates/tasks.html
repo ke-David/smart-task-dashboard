@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Smart Task Dashboard</title>
+    <title>Boards view</title>
     <!-- <link rel="stylesheet" href="style.css"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styleTasks.css') }}">
 </head>
@@ -34,12 +34,7 @@
     <!-- boards container -->
     <main id="boards-wrapper">
 
-        <!-- add board card -->
-        <button id="add-board-btn">
-            + Add Board
-        </button>
-
-        <form id="task-form">
+        <!-- <form id="task-form">
             <input type="text" id="task-input" placeholder="Enter a task" required>
             <select id="category-select">
                 <option value="Critical">Critical</option>
@@ -49,10 +44,12 @@
                 <option value="Unimportant">Unimportant</option>
             </select>
             <button type="submit" id="submit-btn" disabled>Add Task</button>
-        </form>
+        </form> -->
 
         <div id="board-container">
-            <ul id="task-list"></ul>
+            <!-- add board card vutton -->
+
+            <!-- <ul id="task-list"></ul> -->
             <!-- boards injected dynamically -->
 
         </div>

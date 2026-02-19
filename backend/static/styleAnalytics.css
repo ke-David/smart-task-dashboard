@@ -18,7 +18,31 @@ input, select, button {
     padding: 8px;
 }
 
+.analytics-summary {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
 
+.summary-card {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 12px;
+    flex: 1;
+    text-align: center;
+}
+
+.analytics-charts {
+    display: flex;
+    gap: 20px;
+}
+
+.chart-card {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 12px;
+    flex: 1;
+}
 
 
 

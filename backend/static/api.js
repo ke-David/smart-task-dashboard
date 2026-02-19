@@ -58,6 +58,16 @@ export async function loadAnalytics() {
     return await res.json();
 }
 
+export async function loadSum() {
+    const res = await fetch(`${API_BASE}/sum`);
+    
+    if (!res.ok) {
+        throw new Error("Failed to load analytics");
+    }
+
+    return await res.json();
+}
+
 export async function loadBoards() {
     const res = await fetch(`${API_BASE}/boards`);
 

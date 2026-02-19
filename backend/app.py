@@ -203,6 +203,25 @@ def get_stats():
         return jsonify({"error": str(e)}), 500
     
 
+@app.route('/sum', methods=["GET"])
+def get_summ(): 
+    try:
+        conn = get_db_connection()
+        c = conn.cursor()
+        c.execute('SELECT COUNT(*)                             AS total, ' \
+            'SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) AS completed, ' \
+            'SUM(CASE WHEN completed = 0 THEN 1 ELSE 0 END) AS active ' \
+            'FROM tasks')
+        rows = c.fetchone()     #there's only one row
+        conn.close()
+
+        data = {"total": rows['total'], "completed": rows['completed'], "active": rows['active']}
+
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route("/boards", methods=["POST"])
 def add_board():
     data = request.get_json()

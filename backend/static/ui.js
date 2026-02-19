@@ -65,9 +65,20 @@ export function renderCharts(data){
     
 }
 
+export function renderSummary(data) {
+    document.getElementById("totalTasks").textContent = data.total;
+
+    document.getElementById("completedTasks").textContent = data.completed;
+
+    document.getElementById("activeTasks").textContent = data.active;
+
+}
+
 export function renderBoards(boards) {
     boardContainer.innerHTML = "";
     boards.forEach(renderBoard)
+
+    renderAddBoardButton(); //
 }
 
 function renderBoard (board){
@@ -103,7 +114,7 @@ function renderBoardTask(task) {
 
     card.innerHTML = `
         <div class="task-info">
-            <span class="task-text">
+            <span class="task-text" title="${task.text}">
                 <strong>${task.text}</strong>
             </span>
             <span class="task-category">
@@ -115,6 +126,14 @@ function renderBoardTask(task) {
     `;
 
     return card;
+}
+
+function renderAddBoardButton(){
+    const btn = document.createElement("button");
+    btn.id = "add-board-btn";
+    btn.textContent = "+ Add Board";
+
+    boardContainer.appendChild(btn);
 }
 
 
