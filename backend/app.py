@@ -38,7 +38,7 @@ def get_db_connection():
     return conn
 
 
-@app.route("/")
+@app.route("/home")
 def tasks_page():
     return render_template("tasks.html")
 

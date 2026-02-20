@@ -67,6 +67,46 @@ li {
     border-bottom: 1px solid #ccc;
 }
 
+.header-nav-btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(12, 12, 12, 0.619);
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.header-nav-btn:hover {
+    background: rgba(0,0,0,0.9);
+}
+
+/* #floating-nav {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.nav-btn {
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: #222;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.nav-btn:hover {
+    background: #444;
+} */
+
 .task-item {
     display: flex;
     gap: 10px;
@@ -467,12 +507,12 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
     overflow: hidden;
     text-overflow: ellipsis;
 
-    flex: 1;        /* 👈 takes remaining space */
+    flex: 1;        /*  takes remaining space */
     min-width: 0;
 }
 
 .task-category {
-    flex-shrink: 0; /* 👈 never wrap or shrink */
+    flex-shrink: 0; /*  never wrap or shrink */
     opacity: 0.7;
 }
 
@@ -509,6 +549,11 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
     border: none;
     color: crimson;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.complete-checkbox {
+    margin-left: auto; /* tolja el a checkboxot és a gombot jobbra */
     cursor: pointer;
 }
 
