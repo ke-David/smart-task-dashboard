@@ -8,16 +8,18 @@ CORS(app)
 ## DB SQLite
 
 def init_db():
-    conn = sqlite3.connect('backend/data/tasks.db')
+    conn = get_db_connection()
     c = conn.cursor()
-    c.execute('''      
+
+    c.execute("""
         CREATE TABLE IF NOT EXISTS boards (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             position INTEGER DEFAULT 0
         );
-    ''')
-    c.execute('''
+    """)
+
+    c.execute("""
         CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             text TEXT NOT NULL,
@@ -25,9 +27,12 @@ def init_db():
             completed INTEGER NOT NULL DEFAULT 0,
             board_id INTEGER NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(board_id) REFERENCES boards(id)
+            FOREIGN KEY (board_id)
+                REFERENCES boards(id)
+                ON DELETE CASCADE
         );
-    ''')
+    """)
+
     conn.commit()
     conn.close()
 
@@ -35,6 +40,10 @@ def init_db():
 def get_db_connection():
     conn = sqlite3.connect("backend/data/tasks.db")
     conn.row_factory = sqlite3.Row
+
+    # i have to enable it every time a new connection starts
+    conn.execute("PRAGMA foreign_keys = ON;")
+
     return conn
 
 
@@ -281,7 +290,6 @@ def get_boards_with_tasks():
             ORDER BY b.id, t.id
         """)
         # left join bc there are empty boards as well
-
         rows = c.fetchall()
         conn.close()
 
@@ -309,6 +317,23 @@ def get_boards_with_tasks():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+@app.route("/boards/<int:board_id>", methods=["DELETE"])
+def delete_board_with_tasks(board_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("DELETE FROM boards WHERE id = ?", (board_id,))
+        if cur.rowcount == 0:
+            conn.close()
+            return jsonify({'error': 'Board not found'}), 404    # error, board ID not found
+        conn.commit()
+        conn.close()
+        return jsonify({'message': 'Task deleted'}), 200
+    except Exception as e:
+        conn.rollback()
+        return {"error": str(e)}, 500
 
 
 ##  JSON

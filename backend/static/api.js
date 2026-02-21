@@ -94,3 +94,13 @@ export async function loadBoardTasks() {
     return await res.json();
 }
 
+export async function deleteBoardWithTasks(boardId) {
+    const res = await fetch(`/boards/${boardId}`, {
+        method: "DELETE"
+    });
+
+    if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || "Failed to delete board");
+    }
+}

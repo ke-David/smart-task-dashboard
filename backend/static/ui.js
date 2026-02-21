@@ -87,7 +87,10 @@ function renderBoard (board){
     boardDiv.dataset.id = board.id;
 
     boardDiv.innerHTML = `
-        <div class="board-title">${board.title}</div>
+        <div class="board-header">
+            <div class="board-title">${board.title}</div>
+            <button class="delete-board-btn">✕</button>
+        </div>
         <div class="task-container"></div>
         <button class="add-task-btn">+ Add Task</button>
     `;

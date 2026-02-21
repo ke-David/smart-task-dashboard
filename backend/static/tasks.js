@@ -171,6 +171,8 @@ boardContainer.addEventListener("click", async (event) => {
             form.replaceWith(addBtn);
         });
     }
+
+
     
     // add task click
     if (event.target.classList.contains("add-task-btn")){
@@ -241,6 +243,34 @@ boardContainer.addEventListener("click", async (event) => {
         cancelBtn.addEventListener("click", () => {
             form.replaceWith(addBtn);
         });
+    }
+
+
+
+    /* -------------------------
+       DELETE BOARD
+    -------------------------- */
+    if (event.target.classList.contains("delete-board-btn")) {
+        const board = event.target.closest(".board");
+        const boardId = Number(board.dataset.id);
+
+        const confirmed = confirm(
+            "Delete this board and ALL its tasks?\nThis cannot be undone."
+        );
+
+        if (!confirmed) return;
+
+        try {
+            board.classList.add("removing");
+            setTimeout(async () => {
+                await api.deleteBoardWithTasks(boardId);
+                await refreshBoards();
+            }, 200);
+        } catch (err) {
+            alert(err.message);
+        }
+
+        return;
     }
 });
 
