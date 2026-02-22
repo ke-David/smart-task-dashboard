@@ -62,7 +62,7 @@ def get_tasks():
     try:
         conn = get_db_connection()
         c = conn.cursor()
-        c.execute('SELECT id, text, category, completed, board_id FROM tasks')
+        c.execute('SELECT id, text, category, completed, board_id, created_at FROM tasks')
         rows = c.fetchall()
         conn.close()
 
@@ -76,7 +76,7 @@ def get_tasks():
         #     }
         #     tasks.append(task)
 
-        tasks = [{'id': row[0], 'text': row[1], 'category': row[2], 'completed': row[3], 'boardId': row[4]} for row in rows]
+        tasks = [{'id': row[0], 'text': row[1], 'category': row[2], 'completed': row[3], 'boardId': row[4], 'created_at': row[5]} for row in rows]
 
         return jsonify(tasks)
     except Exception as e:
@@ -202,11 +202,26 @@ def get_stats():
             else:
                 completed_vs_active['active'] = row[1]
 
+        # to get timeline hero
+
+        c.execute("""
+            SELECT DATE(created_at) AS day, COUNT(*) AS count
+            FROM tasks
+            GROUP BY DATE(created_at)
+            ORDER BY DATE(created_at)
+        """)
+
+        timeline = [
+            {"day": row[0], "count": row[1]}
+            for row in c.fetchall()
+        ]
+
         conn.close()
 
         return jsonify({
             "tasks_by_category": tasks_by_category,
-            "completed_vs_active": completed_vs_active
+            "completed_vs_active": completed_vs_active,
+            "timeline": timeline
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -217,18 +232,63 @@ def get_summ():
     try:
         conn = get_db_connection()
         c = conn.cursor()
-        c.execute('SELECT COUNT(*)                             AS total, ' \
-            'SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) AS completed, ' \
-            'SUM(CASE WHEN completed = 0 THEN 1 ELSE 0 END) AS active ' \
-            'FROM tasks')
-        rows = c.fetchone()     #there's only one row
+        c.execute('''SELECT COUNT(*) AS total,
+            SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) AS completed,
+            SUM(CASE WHEN completed = 0 THEN 1 ELSE 0 END) AS active,
+            SUM(CASE WHEN category = "Critical" THEN 1 ELSE 0 END) AS critical
+            FROM tasks''')
+        row = c.fetchone()     #there's only one row
         conn.close()
 
-        data = {"total": rows['total'], "completed": rows['completed'], "active": rows['active']}
+        total = row["total"] or 0
+        completed = row["completed"] or 0
+        active = row["active"] or 0
+        critical = row["critical"] or 0
 
-        return jsonify(data)
+        completion_rate = round((completed / total) * 100, 1) if total else 0
+
+        return jsonify({
+            "total": total,
+            "completed": completed,
+            "active": active,
+            "critical": critical,
+            "completionRate": completion_rate
+        })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@app.route('/insights', methods=["GET"])
+def get_insithts(): 
+    try:
+        conn = get_db_connection()
+        c = conn.cursor()
+        c.execute('''
+            SELECT boards.title, COUNT(tasks.id) AS active_count
+            FROM tasks
+            JOIN boards ON tasks.board_id = boards.id
+            WHERE tasks.completed = 0
+            GROUP BY boards.id
+            ORDER BY active_count DESC
+            LIMIT 1
+        ''')
+        row = c.fetchone()     #there's only one row
+        heavy_board = row["title"] if row else None
+        active_count = row["active_count"]
+
+        # c.execute('''
+        #     SELECT 
+        # ''')
+
+        conn.close()
+
+        return jsonify({
+            "heavyBoard": heavy_board,
+            "active_count": active_count
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 @app.route("/boards", methods=["POST"])

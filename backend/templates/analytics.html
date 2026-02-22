@@ -29,39 +29,72 @@
 
     <!-- Summary Cards -->
     <section class="analytics-summary">
-
         <div class="summary-card">
-            <h3>Total Tasks</h3>
+            <h4>Total Tasks</h4>
             <p id="totalTasks">0</p>
         </div>
 
         <div class="summary-card">
-            <h3>Completed Tasks</h3>
-            <p id="completedTasks">0</p>
+            <h4>Completion Rate</h4>
+            <p id="completionRate">0%</p>
         </div>
 
         <div class="summary-card">
-            <h3>Active Tasks</h3>
+            <h4>Active Tasks</h4>
             <p id="activeTasks">0</p>
         </div>
 
+        <div class="summary-card">
+            <h4>Critical</h4>
+            <p id="criticalTasks">—</p>
+        </div>
     </section>
 
+    <!-- hero chart -->
+    <section class="analytics-hero">
+        <div class="chart-card">
+            <h3>Task Activity Over Time</h3>
+            <div class="chart-body">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </div>
+    </section>
 
-    <!-- Charts -->
+    <!-- secondary charts -->
     <section class="analytics-charts">
-
         <div class="chart-card">
             <h3>Tasks Per Category</h3>
-            <canvas id="categoryChart"></canvas>
+            <div class="chart-body">
+                <canvas id="categoryChart"></canvas>
+            </div>
         </div>
 
         <div class="chart-card">
             <h3>Completed vs Active</h3>
-            <canvas id="statusChart"></canvas>
+            <div class="chart-body">
+                <canvas id="statusChart"></canvas>
+            </div>
         </div>
-        
     </section>
+
+    <section class="analytics-insights">
+        <div class="insight-card">
+            📊 Dominant category: <strong id="dominantCategory">—</strong>
+        </div>
+        <div class="insight-card">
+            ⚠️ Board with most active tasks: <strong id="heavyBoard">—</strong>
+        </div>
+        <div class="insight-card">
+            📁 Avg tasks per board: <strong id="avgTasksPerBoard">—</strong>
+        </div>
+    </section>
+
+    <!-- <section class="analytics-wide">
+        <div class="chart-card">
+            <h3>Task Activity Over Time</h3>
+            <canvas id="timelineChart"></canvas>
+        </div>
+    </section> -->
 
 </main>
 

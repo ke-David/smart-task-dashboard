@@ -2,6 +2,7 @@ const taskList = document.getElementById("task-list");
 const boardContainer = document.getElementById("board-container");
 let categoryChartInstance;
 let statusChartInstance;
+let timelineChart;
 
 export function renderTasks(tasks){
     taskList.innerHTML = "";
@@ -42,6 +43,10 @@ export function renderCharts(data){
                 data: Object.values(data.tasks_by_category),
                 backgroundColor: "rgba(54, 162, 235, 0.6)"
             }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
             }
         });
 
@@ -56,6 +61,42 @@ export function renderCharts(data){
                 data: [data.completed_vs_active.active, data.completed_vs_active.completed],
                 backgroundColor: ["rgba(255, 99, 132, 0.6)", "rgba(75, 192, 192, 0.6)"]
             }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // hero timeline
+        if (timelineChart) timelineChart.destroy();
+
+        const labels = data.timeline.map(d => d.day);
+        const timelineData = data.timeline.map(d => d.count);
+
+        timelineChart = new Chart(document.getElementById("timelineChart"), {
+            type: "line",
+            data: {
+                labels,
+                datasets: [{
+                    label: "Tasks Created",
+                    data: timelineData,  
+                    tension: 0.35,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0 }
+                    }
+                }
             }
         });
     } catch (err) {
@@ -68,10 +109,22 @@ export function renderCharts(data){
 export function renderSummary(data) {
     document.getElementById("totalTasks").textContent = data.total;
 
-    document.getElementById("completedTasks").textContent = data.completed;
+    document.getElementById("completionRate").textContent = data.completionRate + "%";
+
+    document.getElementById("criticalTasks").textContent = data.critical;
 
     document.getElementById("activeTasks").textContent = data.active;
+}
 
+export function renderInsights(data){
+    document.getElementById("dominantCategory").textContent =
+            data.bestDay ?? "—";
+
+    document.getElementById("heavyBoard").textContent =
+            data.heavyBoard ? `${data.heavyBoard} (${data.active_count})` : "—";
+
+    document.getElementById("avgTasksPerBoard").textContent =
+            data.streak ? `${data.streak} days` : "—";
 }
 
 export function renderBoards(boards) {

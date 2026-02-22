@@ -48,31 +48,6 @@ document.addEventListener("wheel", (e) => {
     }
 }, { passive: true });
 
-// taskList.addEventListener("click", async(event) => {
-boardContainer.addEventListener("click", async(event) => {
-    if(!event.target.classList.contains("delete-btn"))
-        return;
-
-    if (!confirm("Are you sure you want to delete this task?")) return;
-
-    // const li = event.target.closest("li");
-    const card = event.target.closest(".task-card");
-    const taskId = parseInt(card.dataset.id, 10);    
-
-    try {
-        console.log(taskId);
-    // await fetch(`http://127.0.0.1:5000/tasks/${taskId}`, {
-    //     method: "DELETE",
-    // });
-        await api.deleteTask(taskId);
-        // api.loadTasks();
-        // await refreshTasks();
-        await refreshBoards();
-    } catch (err) {
-        alert(err.message);
-    }
-})
-
 // taskList.addEventListener("change", async(event) => {
 boardContainer.addEventListener("change", async(event) => {
     if (!event.target.classList.contains("complete-checkbox")) return;
@@ -118,133 +93,19 @@ async function refreshBoards() {
 boardContainer.addEventListener("click", async (event) => {
     // add board click
     if (event.target.id === "add-board-btn") {
-        const addBoardBtn = document.getElementById("add-board-btn");
-
-        // Prevent multiple inputs
-        if (addBoardBtn.querySelector("input")) return;
-
-        const addBtn = event.target;
-        if (addBoardBtn.querySelector(".inline-board-form")) return;
-
-        const form = document.createElement("div");
-        form.className = "inline-board-form";
-
-        form.innerHTML = `
-            <input type="text" class="board-input" placeholder="New board..." required>
-            <button class="board-submit" disabled>Ok</button>
-            <button class="board-cancel">✕</button>
-        `;
-
-        // Replace button with form
-        addBtn.replaceWith(form);
-
-        const input = form.querySelector(".board-input");
-        const submitBtn = form.querySelector(".board-submit");
-        const cancelBtn = form.querySelector(".board-cancel");
-
-        input.focus();
-
-        // Enable submit only if text exists
-        input.addEventListener("input", () => {
-            const isEmpty = input.value.trim() === "";
-            submitBtn.disabled = isEmpty;    
-        });
-
-        // Submit handler (button click ONLY)
-        submitBtn.addEventListener("click", async () => {
-            const title = input.value.trim();
-
-            if (title === "") return;
-
-            try {
-                await api.addBoard(title);  
-                form.replaceWith(addBtn);        
-                // await refreshTasks();
-                await refreshBoards();
-            } catch (err) {
-                alert(err.message);
-            }
-        });
-
-        // Cancel handler
-        cancelBtn.addEventListener("click", () => {
-            form.replaceWith(addBtn);
-        });
+        openAddBoardInlineForm(event.target);
+        return;
     }
 
 
-    
     // add task click
-    if (event.target.classList.contains("add-task-btn")){
-        if (!event.target.classList.contains("add-task-btn")) return;
-
+    if (event.target.classList.contains("add-task-btn")) {
         const addBtn = event.target;
         const board = event.target.closest(".board");
         const boardId = parseInt(board.dataset.id, 10);
         // console.log("bId: " + boardId);
-
-        // if theres an existing one already, return
-        if (board.querySelector(".inline-card-form")) return;
-
-        const form = document.createElement("div");
-        form.className = "inline-card-form";
-
-        form.innerHTML = `
-            <input type="text" class="card-input" placeholder="New task..." required>
-
-            <select class="card-category">
-                <option value="Critical">Critical</option>
-                <option value="Important">Important</option>
-                <option value="Moderate">Moderate</option>
-                <option value="Less Important">Less Important</option>
-                <option value="Unimportant">Unimportant</option>
-            </select>
-
-            <button class="card-submit" disabled>Ok</button>
-            <button class="card-cancel">✕</button>
-        `;
-
-        // Replace button with form
-        addBtn.replaceWith(form);
-
-        const input = form.querySelector(".card-input");
-        const select = form.querySelector(".card-category");
-        const submitBtn = form.querySelector(".card-submit");
-        const cancelBtn = form.querySelector(".card-cancel");
-
-        input.focus();
-
-        // Enable submit only if text exists
-        input.addEventListener("input", () => {
-            const isEmpty = input.value.trim() === "";
-            submitBtn.disabled = isEmpty;    
-        });
-
-        // Submit handler (button click ONLY)
-        submitBtn.addEventListener("click", async () => {
-            const text = input.value.trim();
-            const category = select.value;
-
-            if (text === "") return;
-
-            const task = {text, category, boardId};
-
-            try {
-                await api.addTask(task);
-                form.replaceWith(addBtn);   //will put tthe button back
-                // await refreshTasks();
-                await refreshBoards();
-            } catch (err) {
-                alert(err.message);
-            }
-        });
-
-        // Cancel handler
-        cancelBtn.addEventListener("click", () => {
-            form.replaceWith(addBtn);
-        });
+        openAddTaskInlineForm(board, boardId, addBtn);
     }
-
 
 
     /* -------------------------
@@ -272,7 +133,148 @@ boardContainer.addEventListener("click", async (event) => {
 
         return;
     }
+
+
+    //delete task
+    if(event.target.classList.contains("delete-btn")){
+        if (!confirm("Are you sure you want to delete this task?")) return;
+
+        // const li = event.target.closest("li");
+        const card = event.target.closest(".task-card");
+        const taskId = parseInt(card.dataset.id, 10);    
+
+        try {
+            console.log(taskId);
+        // await fetch(`http://127.0.0.1:5000/tasks/${taskId}`, {
+        //     method: "DELETE",
+        // });
+            await api.deleteTask(taskId);
+            // api.loadTasks();
+            // await refreshTasks();
+            await refreshBoards();
+        } catch (err) {
+            alert(err.message);
+        }
+    }
 });
+
+function openAddBoardInlineForm(eventTarget){
+    const addBoardBtn = document.getElementById("add-board-btn");
+
+    // Prevent multiple inputs
+    if (addBoardBtn.querySelector("input")) return;
+
+    const addBtn = eventTarget;
+    if (addBoardBtn.querySelector(".inline-board-form")) return;
+
+    const form = document.createElement("div");
+    form.className = "inline-board-form";
+
+    form.innerHTML = `
+        <input type="text" class="board-input" placeholder="New board..." required>
+        <button class="board-submit" disabled>Ok</button>
+        <button class="board-cancel">✕</button>
+    `;
+
+    // Replace button with form
+    addBtn.replaceWith(form);
+
+    const input = form.querySelector(".board-input");
+    const submitBtn = form.querySelector(".board-submit");
+    const cancelBtn = form.querySelector(".board-cancel");
+
+    input.focus();
+
+    // Enable submit only if text exists
+    input.addEventListener("input", () => {
+        const isEmpty = input.value.trim() === "";
+        submitBtn.disabled = isEmpty;    
+    });
+
+    // Submit handler (button click ONLY)
+    submitBtn.addEventListener("click", async () => {
+        const title = input.value.trim();
+
+        if (title === "") return;
+
+        try {
+            await api.addBoard(title);  
+            form.replaceWith(addBtn);        
+            // await refreshTasks();
+            await refreshBoards();
+        } catch (err) {
+            alert(err.message);
+        }
+    });
+
+    // Cancel handler
+    cancelBtn.addEventListener("click", () => {
+        form.replaceWith(addBtn);
+    });
+}
+
+function openAddTaskInlineForm(board, boardId, addBtn){
+    // if theres an existing one already, return
+    if (board.querySelector(".inline-card-form")) return;
+
+    const form = document.createElement("div");
+    form.className = "inline-card-form";
+
+    form.innerHTML = `
+        <input type="text" class="card-input" placeholder="New task..." required>
+
+        <select class="card-category">
+            <option value="Critical">Critical</option>
+            <option value="Important">Important</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Less Important">Less Important</option>
+            <option value="Unimportant">Unimportant</option>
+        </select>
+
+        <button class="card-submit" disabled>Ok</button>
+        <button class="card-cancel">✕</button>
+    `;
+
+    // Replace button with form
+    addBtn.replaceWith(form);
+
+    const input = form.querySelector(".card-input");
+    const select = form.querySelector(".card-category");
+    const submitBtn = form.querySelector(".card-submit");
+    const cancelBtn = form.querySelector(".card-cancel");
+
+    input.focus();
+
+    // Enable submit only if text exists
+    input.addEventListener("input", () => {
+        const isEmpty = input.value.trim() === "";
+        submitBtn.disabled = isEmpty;    
+    });
+
+    // Submit handler (button click ONLY)
+    submitBtn.addEventListener("click", async () => {
+        const text = input.value.trim();
+        const category = select.value;
+
+        if (text === "") return;
+
+        const task = {text, category, boardId};
+
+        try {
+            await api.addTask(task);
+            form.replaceWith(addBtn);   //will put tthe button back
+            // await refreshTasks();
+            await refreshBoards();
+        } catch (err) {
+            alert(err.message);
+        }
+    });
+
+    // Cancel handler
+    cancelBtn.addEventListener("click", () => {
+        form.replaceWith(addBtn);
+    });
+}
 
 // // mouse
 // wrapper.addEventListener("wheel", e => {
