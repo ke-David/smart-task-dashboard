@@ -118,13 +118,13 @@ export function renderSummary(data) {
 
 export function renderInsights(data){
     document.getElementById("dominantCategory").textContent =
-            data.bestDay ?? "—";
+            data.dominantCategory ? `${data.dominantCategory} (${data.percentage}%)` : "—";
 
     document.getElementById("heavyBoard").textContent =
             data.heavyBoard ? `${data.heavyBoard} (${data.active_count})` : "—";
 
     document.getElementById("avgTasksPerBoard").textContent =
-            data.streak ? `${data.streak} days` : "—";
+            data.avg ? `${data.avg}` : "—";
 }
 
 export function renderBoards(boards) {

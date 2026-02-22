@@ -263,6 +263,7 @@ def get_insithts():
     try:
         conn = get_db_connection()
         c = conn.cursor()
+        #board with the most active tasks
         c.execute('''
             SELECT boards.title, COUNT(tasks.id) AS active_count
             FROM tasks
@@ -276,15 +277,52 @@ def get_insithts():
         heavy_board = row["title"] if row else None
         active_count = row["active_count"]
 
+        # category with the most tasks, percentage of it; so which one is the most frequent/dominant category and what is its relative share
+        c.execute('''
+            SELECT category, 
+                  COUNT(*) AS task_count, 
+                  ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM tasks), 1) AS percentage
+            FROM tasks
+            GROUP BY category
+            ORDER BY task_count DESC
+            LIMIT 1
+        ''')
+
+        row = c.fetchone()     #there's only one row
+        dominantCategory = row["category"] if row else None
+        percentage = row["percentage"]
+
+        # average tasks per board; "(t.id) * 1.0 " bc otherwise it will be integer, not float
+        c.execute('''
+            SELECT 
+                ROUND(COUNT(t.id) * 1.0 / COUNT(DISTINCT b.id), 1) AS avg
+            FROM boards b
+            LEFT JOIN tasks t ON b.id = t.board_id;
+        ''')
+
+        #its the same, like the other avg, just different style
         # c.execute('''
-        #     SELECT 
+        #     WITH stats AS (
+        #         SELECT 
+        #             COUNT(DISTINCT b.id) AS bid, 
+        #             COUNT(t.id) AS tid
+        #         FROM boards b
+        #         LEFT JOIN tasks t ON b.id = t.board_id
+        #     )
+        #     SELECT bid, tid, ROUND(tid * 1.0 / bid, 1) AS avg FROM stats;
         # ''')
+
+        row = c.fetchone()     
+        avg = row["avg"] if row else None
 
         conn.close()
 
         return jsonify({
             "heavyBoard": heavy_board,
-            "active_count": active_count
+            "active_count": active_count,
+            "dominantCategory": dominantCategory,
+            "percentage": percentage,
+            "avg": avg
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
