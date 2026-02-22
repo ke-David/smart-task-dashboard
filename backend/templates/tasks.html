@@ -114,6 +114,18 @@
             src="{{ url_for('static', filename='pictures/dicaprio.png') }}" />
     </div>
 
+    <div id="soft-confirm-overlay" class="hidden">
+        <div class="soft-confirm">
+            <h3 id="soft-confirm-title"></h3>
+            <p id="soft-confirm-message"></p>
+
+            <div class="soft-confirm-actions">
+                <button id="soft-confirm-cancel">Cancel</button>
+                <button id="soft-confirm-ok" class="danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- <script src="script.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

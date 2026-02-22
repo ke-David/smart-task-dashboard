@@ -115,9 +115,11 @@ boardContainer.addEventListener("click", async (event) => {
         const board = event.target.closest(".board");
         const boardId = Number(board.dataset.id);
 
-        const confirmed = confirm(
-            "Delete this board and ALL its tasks?\nThis cannot be undone."
-        );
+        const confirmed = await softConfirm({
+            title: "Delete board?",
+            message: "This will remove the board and ALL its tasks. This cannot be undone.",
+            danger: true
+        });
 
         if (!confirmed) return;
 
@@ -137,7 +139,13 @@ boardContainer.addEventListener("click", async (event) => {
 
     //delete task
     if(event.target.classList.contains("delete-btn")){
-        if (!confirm("Are you sure you want to delete this task?")) return;
+        const confirmed = await softConfirm({
+            title: "Delete task?",
+            message: "This will remove the task. This action cannot be undone.",
+            danger: true
+        });
+
+        if (!confirmed) return;
 
         // const li = event.target.closest("li");
         const card = event.target.closest(".task-card");
@@ -273,6 +281,35 @@ function openAddTaskInlineForm(board, boardId, addBtn){
     // Cancel handler
     cancelBtn.addEventListener("click", () => {
         form.replaceWith(addBtn);
+    });
+}
+
+function softConfirm({ title, message, danger = false }) {
+    // promise bc it will give a response later, when something happens (user clicks)
+    // resolve() will finish the promise
+    return new Promise(resolve => {     
+        const overlay = document.getElementById("soft-confirm-overlay");
+        const titleEl = document.getElementById("soft-confirm-title");
+        const messageEl = document.getElementById("soft-confirm-message");
+        const okBtn = document.getElementById("soft-confirm-ok");
+        const cancelBtn = document.getElementById("soft-confirm-cancel");
+
+        titleEl.textContent = title;
+        messageEl.textContent = message;
+
+        okBtn.classList.toggle("danger", danger);
+
+        overlay.classList.remove("hidden");
+
+        const cleanup = (result) => {
+            overlay.classList.add("hidden");
+            okBtn.onclick = null;
+            cancelBtn.onclick = null;
+            resolve(result);
+        };
+
+        okBtn.onclick = () => cleanup(true);
+        cancelBtn.onclick = () => cleanup(false);
     });
 }
 

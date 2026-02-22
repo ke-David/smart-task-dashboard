@@ -623,3 +623,74 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+
+/* .hidden {
+    display: none;
+} */
+
+#soft-confirm-overlay.hidden {
+    display: none;
+    pointer-events: none;
+}
+
+#soft-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    pointer-events: auto;
+}
+
+.soft-confirm {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(16px);
+    padding: 22px;
+    border-radius: 16px;
+    width: 320px;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.35);
+    animation: fadeInScale 0.18s ease;
+}
+
+.soft-confirm h3 {
+    margin: 0 0 8px;
+}
+
+.soft-confirm p {
+    margin: 0 0 18px;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+.soft-confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.soft-confirm-actions button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.soft-confirm-actions .danger {
+    background: crimson;
+    color: white;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
