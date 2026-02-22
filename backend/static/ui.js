@@ -1,6 +1,8 @@
 const taskList = document.getElementById("task-list");
+const boardContainer = document.getElementById("board-container");
 let categoryChartInstance;
 let statusChartInstance;
+let timelineChart;
 
 export function renderTasks(tasks){
     taskList.innerHTML = "";
@@ -41,6 +43,10 @@ export function renderCharts(data){
                 data: Object.values(data.tasks_by_category),
                 backgroundColor: "rgba(54, 162, 235, 0.6)"
             }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
             }
         });
 
@@ -55,6 +61,42 @@ export function renderCharts(data){
                 data: [data.completed_vs_active.active, data.completed_vs_active.completed],
                 backgroundColor: ["rgba(255, 99, 132, 0.6)", "rgba(75, 192, 192, 0.6)"]
             }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // hero timeline
+        if (timelineChart) timelineChart.destroy();
+
+        const labels = data.timeline.map(d => d.day);
+        const timelineData = data.timeline.map(d => d.count);
+
+        timelineChart = new Chart(document.getElementById("timelineChart"), {
+            type: "line",
+            data: {
+                labels,
+                datasets: [{
+                    label: "Tasks Created",
+                    data: timelineData,  
+                    tension: 0.35,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0 }
+                    }
+                }
             }
         });
     } catch (err) {
@@ -63,3 +105,145 @@ export function renderCharts(data){
     }
     
 }
+
+export function renderSummary(data) {
+    document.getElementById("totalTasks").textContent = data.total;
+
+    document.getElementById("completionRate").textContent = data.completionRate + "%";
+
+    document.getElementById("criticalTasks").textContent = data.critical;
+
+    document.getElementById("activeTasks").textContent = data.active;
+}
+
+export function renderInsights(data){
+    document.getElementById("dominantCategory").textContent =
+            data.dominantCategory ? `${data.dominantCategory} (${data.percentage}%)` : "—";
+
+    document.getElementById("heavyBoard").textContent =
+            data.heavyBoard ? `${data.heavyBoard} (${data.active_count})` : "—";
+
+    document.getElementById("avgTasksPerBoard").textContent =
+            data.avg ? `${data.avg}` : "—";
+}
+
+export function renderBoards(boards) {
+    boardContainer.innerHTML = "";
+    boards.forEach(renderBoard)
+
+    renderAddBoardButton(); //
+}
+
+function renderBoard (board){
+    const boardDiv = document.createElement("div");
+    boardDiv.classList.add("board");
+    boardDiv.dataset.id = board.id;
+
+    boardDiv.innerHTML = `
+        <div class="board-header">
+            <div class="board-title">${board.title}</div>
+            <button class="delete-board-btn">✕</button>
+        </div>
+        <div class="task-container"></div>
+        <button class="add-task-btn">+ Add Task</button>
+    `;
+
+    const taskContainer = boardDiv.querySelector(".task-container");
+
+    // board.tasks just as board.id is from the json
+    board.tasks.forEach(task => {
+        taskContainer.appendChild(renderBoardTask(task));
+    });
+
+    boardContainer.appendChild(boardDiv);
+}
+
+function renderBoardTask(task) {
+    const card = document.createElement("div");
+    card.className = "task-card";
+    card.dataset.id = task.id;  `task-${task.id}`;  // 'task-' prefix to avoid numeric only Id (that might be tricky with CSS selectors)
+
+    if (task.completed === 1) {
+        card.classList.add("completed");
+        //   console.log("hehh")
+    }
+
+    card.innerHTML = `
+        <div class="task-info">
+            <span class="task-text" title="${task.text}">
+                <strong>${task.text}</strong>
+            </span>
+            <span class="task-category">
+                <small>(${task.category})</small>
+            </span>
+        </div>
+        <input type="checkbox" class="complete-checkbox" ${task.completed ? "checked" : ""}>
+        <button class="delete-btn">✕</button>
+    `;
+
+    return card;
+}
+
+function renderAddBoardButton(){
+    const btn = document.createElement("button");
+    btn.id = "add-board-btn";
+    btn.textContent = "+ Add Board";
+
+    boardContainer.appendChild(btn);
+}
+
+
+
+// export function renderBoards(tasks) {
+//     const container = document.getElementById("board-container");
+//     container.innerHTML = "";
+
+//     // group tasks by category
+//     const grouped = {};
+
+//     tasks.forEach(task => {
+//         if (!grouped[task.category]) {
+//             grouped[task.category] = [];
+//         }
+//         grouped[task.category].push(task);
+//     });
+
+//     // create column per category
+//     Object.entries(grouped).forEach(([category, categoryTasks]) => {
+
+//         const column = document.createElement("div");
+//         column.classList.add("column");
+
+//         const title = document.createElement("div");
+//         title.classList.add("column-title");
+//         title.textContent = category;
+
+//         column.appendChild(title);
+
+//         categoryTasks.forEach(task => {
+//             column.appendChild(createTaskCard(task));
+//         });
+
+//         container.appendChild(column);
+//     });
+// }
+
+// function createTaskCard(task) {
+//     const card = document.createElement("div");
+//     card.classList.add("task-card");
+//     card.dataset.id = task.id;
+
+//     if (task.completed) {
+//         card.classList.add("completed");
+//     }
+
+//     card.innerHTML = `
+//         <div class="task-info">
+//             <span>${task.text}</span>
+//         </div>
+//         <button class="delete-btn">X</button>
+//         <input type="checkbox" class="complete-checkbox" ${task.completed ? "checked" : ""}>
+//     `;
+
+//     return card;
+// }

@@ -2,30 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Smart Task Dashboard</title>
+    <title>Boards view</title>
     <!-- <link rel="stylesheet" href="style.css"> -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleTasks.css') }}">
 </head>
 <body>
 
-    <div id="app-root">
+    <!-- top nav -->
+    <header class="topbar">
+
         <h1>Smart Task Dashboard</h1>
 
-        <!-- <label class="toggle">
+        <div class="topbar-controls">
+
+            <div class="settings-row">
+                <label class="switch">
+                    <input type="checkbox" id="celebration-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-label">Celebrations</span>
+            </div>
+
+
+            <!-- <button id="nav-btn" onclick="window.location.href='/analytics'">
+                📊 Analytics →
+            </button> -->
+            <a href="/analytics" class="header-nav-btn">
+                📊 Analytics →
+            </a>
+
+        </div>
+    </header>
+
+    <!-- <nav id="floating-nav">
+        <a href="/analytics" class="nav-btn">📊 Analytics →</a>
+    </nav> -->
+
+    <!-- boards container -->
+    <main id="boards-wrapper">
+
+        <!-- <form id="task-form">
+            <input type="text" id="task-input" placeholder="Enter a task" required>
+            <select id="category-select">
+                <option value="Critical">Critical</option>
+                <option value="Important">Important</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Less Important">Less Important</option>
+                <option value="Unimportant">Unimportant</option>
+            </select>
+            <button type="submit" id="submit-btn" disabled>Add Task</button>
+        </form> -->
+
+        <div id="board-container">
+            <!-- add board card vutton -->
+
+            <!-- <ul id="task-list"></ul> -->
+            <!-- boards injected dynamically -->
+
+        </div>
+
+    </main>
+
+    <!-- <div id="app-root">
+        <h1>Smart Task Dashboard</h1>
+
+        <button onclick="window.location.href='/analytics'">
+            📊 Analytics
+        </button>
+
+         <label class="toggle">
             <input type="checkbox" id="celebration-toggle" checked>
                 🎉 Celebrations Enabled
         </label> -->
 
-        <div class="settings-row">
+        <!-- <div class="settings-row">
             <label class="switch">
                 <input type="checkbox" id="celebration-toggle" checked>
                 <span class="slider"></span>
             </label>
             <span class="toggle-label">Celebrations</span>
-        </div>
+        </div> -->
 
         <!-- form -->
-        <form id="task-form">
+        <!-- <form id="task-form">
             <input type="text" id="task-input" placeholder="Enter a task" required>
             <select id="category-select">
                 <option value="work">Work</option>
@@ -35,17 +94,12 @@
             <button type="submit" id="submit-btn" disabled>Add Task</button>
         </form>
 
-        <ul id="task-list"></ul>
+        <div id="board-container">
+            <ul id="task-list"></ul>
+        </div> -->
 
-        <!-- analytics -->
-        <div id="analytics">
-            <h3>Tasks per Category</h3>
-            <canvas id="categoryChart"></canvas>
-
-            <h3>Completed vs Active</h3>
-            <canvas id="statusChart"></canvas>
-        </div>
-    </div>
+        
+    <!-- </div> --> 
 
     <div id="overlay-root">
         <!-- celebration -->
@@ -60,11 +114,23 @@
             src="{{ url_for('static', filename='pictures/dicaprio.png') }}" />
     </div>
 
+    <div id="soft-confirm-overlay" class="hidden">
+        <div class="soft-confirm">
+            <h3 id="soft-confirm-title"></h3>
+            <p id="soft-confirm-message"></p>
+
+            <div class="soft-confirm-actions">
+                <button id="soft-confirm-cancel">Cancel</button>
+                <button id="soft-confirm-ok" class="danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- <script src="script.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <script type="module" src="script.js"></script> -->
-    <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='tasks.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
 </html>

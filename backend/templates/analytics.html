@@ -1,1 +1,107 @@
-<h1>Smart Task Dashboard</h1>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics Dashboard</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleAnalytics.css') }}">
+</head>
+<body>
+
+    <header class="topbar">
+
+        <h1>Analytics Dashboard</h1>
+
+        <!-- <button onclick="window.location.href='/'">
+             Back to Tasks
+        </button> -->
+        <!-- <nav id="floating-nav">
+            <a href="home" class="nav-btn"> ← 🗂 Boards</a>
+        </nav> -->
+        <a href="/home" class="header-nav-btn">
+            ← 🗂 Boards
+        </a>
+
+    </header>
+
+    <main class="analytics-wrapper">
+
+    <!-- Summary Cards -->
+    <section class="analytics-summary">
+        <div class="summary-card">
+            <h4>Total Tasks</h4>
+            <p id="totalTasks">0</p>
+        </div>
+
+        <div class="summary-card">
+            <h4>Completion Rate</h4>
+            <p id="completionRate">0%</p>
+        </div>
+
+        <div class="summary-card">
+            <h4>Active Tasks</h4>
+            <p id="activeTasks">0</p>
+        </div>
+
+        <div class="summary-card">
+            <h4>Critical</h4>
+            <p id="criticalTasks">—</p>
+        </div>
+    </section>
+
+    <!-- hero chart -->
+    <section class="analytics-hero">
+        <div class="chart-card">
+            <h3>Task Activity Over Time</h3>
+            <div class="chart-body">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- secondary charts -->
+    <section class="analytics-charts">
+        <div class="chart-card">
+            <h3>Tasks Per Category</h3>
+            <div class="chart-body">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h3>Completed vs Active</h3>
+            <div class="chart-body">
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section class="analytics-insights">
+        <div class="insight-card">
+            📊 Dominant category: <strong id="dominantCategory">—</strong>
+        </div>
+        <div class="insight-card">
+            ⚠️ Board with most active tasks: <strong id="heavyBoard">—</strong>
+        </div>
+        <div class="insight-card">
+            📁 Avg tasks per board: <strong id="avgTasksPerBoard">—</strong>
+        </div>
+    </section>
+
+    <!-- <section class="analytics-wide">
+        <div class="chart-card">
+            <h3>Task Activity Over Time</h3>
+            <canvas id="timelineChart"></canvas>
+        </div>
+    </section> -->
+
+</main>
+
+    <!-- <script src="script.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script type="module" src="script.js"></script> -->
+    <script type="module" src="{{ url_for('static', filename='analytics.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>
