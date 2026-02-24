@@ -1,98 +1,153 @@
 # Smart Task Dashboard
 
-A small web app built to refresh and demonstrate core IT BSc skills through one coherent, end-to-end project.
+A lightweight web app for managing tasks and visualizing productivity insights.
 
-The goal of this project: building a realistic application using common tools and concepts expected from a junior IT graduate.
+This project was built to refresh and demonstrate end-to-end software development skills expected from a junior full-stack / backend / frontend developer: API design, database modeling, frontend rendering, and analytics visualization — all in one coherent app
+
+
+## What the App Does
+
+- Manage tasks across multiple boards
+- Track task status (active vs completed)
+- Categorize tasks by importance
+- Persist data using a relational database
+- Visualize task analytics in a modern dashboard
+
+The application includes a Trello-like task page (Boards view) and a dedicated analytics page (Insights and trends view).
 
 
 ## Project Goals
 
-- Refresh frontend development fundamentals
-- Practice backend development with Python and Flask
-- Work with relational databases
-- Apply REST API design principles
-- Apply Git and GitHub workflows
-- Build a simple web application to create and manage daily tasks.
-
+- Refresh and apply core IT BSc knowledge in a realistic project
+- Practice frontend ↔ backend communication
+- Design a small but complete REST API
+- Work with relational databases, SQL aggregations and analytics
+- Apply Git and GitHub workflows and project structure practices
 
 
 ## Technologies Used
 
 ### Frontend
 - HTML
-- CSS
-- JavaScript
-- Chart.js (analytics visualization)
+- CSS (modern layout, card-based UI, glassmorphism)
+- JavaScript (ES modules)
+- Chart.js (analytics data visualization)
 
 ### Backend
 - Python
-- Flask
+- Flask (REST API)
 
 ### Database
-- SQLite
+- SQLite (relational schema with foreign keys and cascade delete)
 
 ### Development & Tools
-- Git
-- GitHub
+- Git & GitHub
 - REST APIs
 - Virtual environments (venv)
-- Basic data aggregation and analytics
+- Data aggregation and analytics
+- Separation of concerns (UI / API / DB)
 
 
 ## Features
 
-### Task Management
-- Create tasks with categories
+### Task Board
+- Create and delete boards
+- Add, complete, and delete tasks with categories
 - Display tasks dynamically
-- Delete tasks
-- Mark tasks as completed
+- Inline task creation (Trello-style)
+- Mark tasks as completed and "celebration:)"
 - Persistent storage using SQLite
 - Input validation and error handling
-
-### Backend API (REST)
-- `GET /tasks` – Return all tasks
-- `POST /tasks` – Create a new task
-- `PUT /tasks/<id>` – Update task (mark as done)
-- `DELETE /tasks/<id>` – Remove task
-- `GET /stats` – Return aggregated analytics data
+- Foreign-key relationships between boards and tasks
 
 ### Analytics Dashboard
-- Task count per category
-- Completed vs active tasks
-- Data visualization using Chart.js
+- Total tasks, active tasks, completion rate
+- Critical task counter (alert-style UI)
+- Tasks per category (bar chart)
+- Active vs completed tasks (pie chart)
+- Task creation activity over time (hero timeline chart)
+- Aggregated insights (overloaded board, dominant category, board with the most active tasks)
 
-### Practices
-- MVC structure in frontend
-- Database initialization
-- Consistent JSON error responses
-- Event delegation in frontend
-- Defensive programming (validation, try/catch)
+### Architecture & Practices
+- MVC-like structure in frontend
+- REST API with aggregated endpoints 
+    (e.g. `GET /stats` - Return chart data; `DELETE /boards/<id>` - Remove board with all its tasks)
+- Safe SQL queries and joins
+- Modular frontend rendering
+- Event delegation and chart lifecycle management
+- Defensive programming (validation, try/catch), error handling
+- Consistent JSON responses
+
 
 ## Screenshots
 
-..
+![Task Boards](docs/boards.png)
+![Analytics Dashboard](docs/analytics.png)
+
+🎥 Demo Video: https://youtu.be/link
+
+
+## What I learned
+
+- Connecting frontend and backend systems, modular UI
+- Structuring a small full-stack project
+- SQL aggregation and analytics queries
+- Designing and implementing REST APIs
+- Handling asynchronous frontend/backend requests, debugging issues
+- Data visualization principles
+- Writing maintainable, readable code
+- Using Git and feature branches for development
 
 
 ## Project Structure
 
-smart-task-dashboard/
+"tree /f"
+
+C:.
+│   .gitignore
+│   README.md
 │
-|--- frontend/
-│  |--- index.html
-│  |--- style.css
-│  |--- script.js
-|  |--- ui.js
-|  |---api.js
+├───.vscode
+│       launch.json
 │
-|--- backend/
-│  |--- app.py
-|  |--- requirements.txt
-│  |--- tasks/
-|     |--- tasks.db
-|     |--- tasks.json
+├───app
+│   │   app.py
+│   │   requirements.txt
+│   │
+│   ├───data
+│   │       tasks.db
+│   │
+│   ├───static
+│   │   │   analytics.js
+│   │   │   api.js
+│   │   │   celebration.js
+│   │   │   styleAnalytics.css
+│   │   │   styleTasks.css
+│   │   │   tasks.js
+│   │   │   ui.js
+│   │   │
+│   │   ├───pictures
+│   │   │       chicagofire.gif
+│   │   │       crocodile.jpg
+│   │   │       dance.gif
+│   │   │       dicaprio.png
+│   │   │       wallpaper.png
+│   │   │       wallpaper1.jpg
+│   │   │
+│   │   └───sounds
+│   │           dance.mp3
+│   │           gatsby.mp3
+│   │           hawaii.mp3
+│   │
+│   ├───templates
+│           analytics.html
+│           tasks.html
+│   
 │
-|--- .gitignore
-|--- README.md
+├───docs
+│       demo.gif
+│
+└───venv
 
 
 ## How to Run Locally
@@ -113,36 +168,30 @@ pip install -r backend/requirements.txt
 
 ### 4. Run the backend server
 
-python backend/app.py
+python app/app.py
 
 Backend runs at:
 http://127.0.0.1:5000
 
 ### 5. Open frontend
 
-Open frontend/index.html in your browser.
+Open http://127.0.0.1:5000/home in your browser.
 
-
-## What I learned
-
-- Designing and implementing REST APIs
-- Connecting frontend and backend systems
-- Working with SQLite databases
-- Handling asynchronous JavaScript requests
-- Debugging CORS and network issues (ex when i swiched to modules)
-- Structuring a small full-stack project
-- Writing clean, readable, and maintainable code
-- Using Git for development
-
-## Feature branch
 
 ## Future Improvements
 
 - Task filtering and sorting
-- Completion timestamps (and analytics using timestamps)
-- Deployment to cloud
-- Unit test for backend routes
-- Ppriority prediction using basic ML
-- Nicer UI
+- Task completion timestamps
+- Creating deadlines, date range selector
+- Focus mode for a specific task
+- Dark mode
+- Drag-and-drop task reordering
+- User accounts & authentication
+- Ppriority prediction and advanced analytics using basic ML
+- Exporting charts
+
+## Notes
+
+This project is intentionally kept framework-light to highlight core concepts, not library overdose.
 
  

@@ -16,16 +16,11 @@ toggle.checked = localStorage.getItem("celebrationsEnabled") !== "false";   //wi
 let tasks = [];
 let boards = [];
 
-//load tasks n boards
+
 document.addEventListener("DOMContentLoaded", async () => {
     await refreshBoards();
-    // await refreshTasks();
 });
 
-// taskInput.addEventListener("input", () => {
-//   const isEmpty = taskInput.value.trim() === "";
-//   submitBtn.disabled = isEmpty;
-// })
 
 async function refreshTasks() {
     try {
@@ -38,29 +33,25 @@ async function refreshTasks() {
 
 document.addEventListener("wheel", (e) => {
     const taskContainer = e.target.closest(".task-container");
-    if (!taskContainer) return;
+    if (!taskContainer) return; // if the mouse is not above the container, it stops
 
     const canScroll =
-        taskContainer.scrollHeight > taskContainer.clientHeight;
+        taskContainer.scrollHeight > taskContainer.clientHeight;    // is the content actually 'higher' (vertically longer), than the window thaat i can see
 
     if (canScroll) {
-        e.stopPropagation();
+        e.stopPropagation();    // doesn't affect the parents, only the inner container
     }
 }, { passive: true });
 
-// taskList.addEventListener("change", async(event) => {
 boardContainer.addEventListener("change", async(event) => {
     if (!event.target.classList.contains("complete-checkbox")) return;
 
-    // const li = event.target.closest("li");
     const card = event.target.closest(".task-card");
     const taskId = parseInt(card.dataset.id, 10);
     const completed = event.target.checked; //boolean
 
     try {
         await api.markCompleted(taskId, completed);
-        // li.classList.toggle("completed", completed);
-        // await refreshTasks();
         await refreshBoards();
 
         if (completed === true) {
@@ -78,7 +69,6 @@ toggle.addEventListener("change", () => {
 
 async function refreshBoards() {
     try {
-        // boards = await api.loadBoards();
         boards = await api.loadBoardTasks();
         ui.renderBoards(boards);
     } catch (err) {
@@ -86,38 +76,33 @@ async function refreshBoards() {
     }
 }
 
-    // openAddTaskInlineForm(board, boardId, event.target);
-
-// event delagation!!! The listener is attached to the board-container and it catches clicks from elements inside it, even if i add those later dynamically
-//listener for both "add task" and "add board"
+// event delagation; The listener is attached to the board-container and it catches clicks from elements inside it, even if i add those later dynamically
+// listener for multiple element added later
 boardContainer.addEventListener("click", async (event) => {
-    // add board click
+    // add board btn 
     if (event.target.id === "add-board-btn") {
         openAddBoardInlineForm(event.target);
         return;
     }
 
 
-    // add task click
+    // add task btn
     if (event.target.classList.contains("add-task-btn")) {
         const addBtn = event.target;
         const board = event.target.closest(".board");
         const boardId = parseInt(board.dataset.id, 10);
-        // console.log("bId: " + boardId);
         openAddTaskInlineForm(board, boardId, addBtn);
     }
 
 
-    /* -------------------------
-       DELETE BOARD
-    -------------------------- */
+    // delete board btn
     if (event.target.classList.contains("delete-board-btn")) {
         const board = event.target.closest(".board");
         const boardId = Number(board.dataset.id);
 
         const confirmed = await softConfirm({
             title: "Delete board?",
-            message: "This will remove the board and ALL its tasks. This cannot be undone.",
+            message: "This will remove the board and ALL its tasks. This action cannot be undone.",
             danger: true
         });
 
@@ -137,7 +122,7 @@ boardContainer.addEventListener("click", async (event) => {
     }
 
 
-    //delete task
+    //delete task btn
     if(event.target.classList.contains("delete-btn")){
         const confirmed = await softConfirm({
             title: "Delete task?",
@@ -147,18 +132,11 @@ boardContainer.addEventListener("click", async (event) => {
 
         if (!confirmed) return;
 
-        // const li = event.target.closest("li");
         const card = event.target.closest(".task-card");
         const taskId = parseInt(card.dataset.id, 10);    
 
         try {
-            console.log(taskId);
-        // await fetch(`http://127.0.0.1:5000/tasks/${taskId}`, {
-        //     method: "DELETE",
-        // });
             await api.deleteTask(taskId);
-            // api.loadTasks();
-            // await refreshTasks();
             await refreshBoards();
         } catch (err) {
             alert(err.message);
@@ -199,7 +177,7 @@ function openAddBoardInlineForm(eventTarget){
         submitBtn.disabled = isEmpty;    
     });
 
-    // Submit handler (button click ONLY)
+    // submit handler (only if button is clicked)
     submitBtn.addEventListener("click", async () => {
         const title = input.value.trim();
 
@@ -208,21 +186,20 @@ function openAddBoardInlineForm(eventTarget){
         try {
             await api.addBoard(title);  
             form.replaceWith(addBtn);        
-            // await refreshTasks();
             await refreshBoards();
         } catch (err) {
             alert(err.message);
         }
     });
 
-    // Cancel handler
+    // cancel handler
     cancelBtn.addEventListener("click", () => {
         form.replaceWith(addBtn);
     });
 }
 
 function openAddTaskInlineForm(board, boardId, addBtn){
-    // if theres an existing one already, return
+    // if there's an existing one already, return
     if (board.querySelector(".inline-card-form")) return;
 
     const form = document.createElement("div");
@@ -259,7 +236,7 @@ function openAddTaskInlineForm(board, boardId, addBtn){
         submitBtn.disabled = isEmpty;    
     });
 
-    // Submit handler (button click ONLY)
+    // Submit handler (only button click)
     submitBtn.addEventListener("click", async () => {
         const text = input.value.trim();
         const category = select.value;
@@ -271,7 +248,6 @@ function openAddTaskInlineForm(board, boardId, addBtn){
         try {
             await api.addTask(task);
             form.replaceWith(addBtn);   //will put tthe button back
-            // await refreshTasks();
             await refreshBoards();
         } catch (err) {
             alert(err.message);
@@ -312,73 +288,4 @@ function softConfirm({ title, message, danger = false }) {
         cancelBtn.onclick = () => cleanup(false);
     });
 }
-
-// // mouse
-// wrapper.addEventListener("wheel", e => {
-
-//     if (e.deltaY === 0) return;
-
-//     e.preventDefault();
-
-//     wrapper.scrollLeft += e.deltaY;
-// });
-
-
-// form.addEventListener ("submit", async (event) => {
-
-//     event.preventDefault();
-
-//     const text = taskInput.value.trim();
-//     const category = categorySelect.value;
-    
-//     if (text === "") return;
-
-//     const task = {text, category};
-
-//     try {
-//         await api.addTask(task);
-//         taskInput.value = "";
-//         await refreshTasks();
-//     } catch (err) {
-//         alert(err.message);
-//     }
-// })
-
-// form.addEventListener("submit", function (event) {
-//     event.preventDefault();
-
-//     const taskText = taskInput.value.trim();
-//     const category = categorySelect.value;
-
-//     if (taskText === "") return;
-
-//     const task = {
-//         text: taskText,
-//         category: category
-//     };
-
-//     tasks.push(task);
-//     renderTasks();
-
-//     taskInput.value = "";
-// });
-
-// function renderTasks() {
-//     taskList.innerHTML = "";
-
-//     function renderTask(task) {
-//         const li = document.createElement("li");
-//         li.textContent = `${task.text} (${task.category})`; //template literal, can put any JS expression, not just variables
-//         taskList.appendChild(li);
-//     }
-
-//     tasks.forEach(function (task){  //anonymous func
-//         const li = document.createElement("li");
-//         li.textContent = `${task.text} (${task.category})`;
-//         taskList.appendChild(li); //only accepts element made by document.createElement, li is a Node object
-//     });
-
-// }
-
-
  

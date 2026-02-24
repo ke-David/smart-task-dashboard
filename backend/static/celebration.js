@@ -24,7 +24,7 @@ export function ultimateCelebration() {
 
     if (!celebrationsEnabled()) return;
 
-    // const current = celebrations[Math.floor(Math.random() * celebrations.length)];
+    // can be randomized later
     const current = celebrations[celebrationIndex];
 
     showCelebrationBanner(current.banner);
@@ -68,13 +68,8 @@ function showCelebrationBanner(text) {
     banner.textContent = text;
 
     banner.classList.remove("hidden");
-    // void banner.offsetWidth; // forces reflow
+    void banner.offsetWidth; // forces reflow
     banner.classList.add("show-banner");
-
-    // // restart animation
-    // banner.style.animation = "none";
-    // banner.offsetHeight; // force reflow
-    // banner.style.animation = null;
 
     setTimeout(() => {
         banner.classList.add("hidden");
@@ -82,24 +77,7 @@ function showCelebrationBanner(text) {
     }, 4000);
 }
 
-// function showCelebrationBanner() {
-//   const banner = document.getElementById("celebration-banner");
-
-//   console.log("Banner found:", banner);
-//   console.log("Before remove:", banner.classList);
-
-//   banner.classList.remove("hidden");
-
-//   console.log("After remove:", banner.classList);
-
-//   setTimeout(() => {
-//     banner.classList.add("hidden");
-//     console.log("Banner hidden again");
-//   }, 4000);
-// }
-
 let memeTimer;
-
 
 function showMeme(src) {
     const meme = document.getElementById("meme-overlay");

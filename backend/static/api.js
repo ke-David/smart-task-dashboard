@@ -15,8 +15,7 @@ export async function deleteTask(taskId) {
 
 export async function loadTasks(){
     const res = await fetch(`${API_BASE}/tasks`);
-    // tasks = await res.json();
-    // renderTasks();
+    
     if (!res.ok) {
         throw new Error("Failed to load tasks");
     }
@@ -62,7 +61,7 @@ export async function loadSum() {
     const res = await fetch(`${API_BASE}/sum`);
     
     if (!res.ok) {
-        throw new Error("Failed to load analytics");
+        throw new Error("Failed to load summary");
     }
 
     return await res.json();
@@ -72,7 +71,7 @@ export async function loadInsights() {
     const res = await fetch(`${API_BASE}/insights`);
     
     if (!res.ok) {
-        throw new Error("Failed to load analytics");
+        throw new Error("Failed to load insights");
     }
 
     return await res.json();   

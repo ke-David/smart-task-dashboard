@@ -6,7 +6,6 @@ let timelineChart;
 
 export function renderTasks(tasks){
     taskList.innerHTML = "";
-    // tasks.forEach(task => renderTask(task));
     tasks.forEach(renderTask);
 }
 
@@ -15,9 +14,7 @@ export function renderTask(task){
 
     if (task.completed === 1) {
       li.classList.add("completed");
-    //   console.log("hehh")
     }
-    // li.id = `task-${task.id}`;  // 'task-' prefix to avoid numeric only Id (that might be tricky with CSS selectors)
     li.dataset.id = task.id;
     li.classList.add("task-item");
     li.innerHTML = ` <span class="task-id">${task.id}.       </span>
@@ -131,7 +128,7 @@ export function renderBoards(boards) {
     boardContainer.innerHTML = "";
     boards.forEach(renderBoard)
 
-    renderAddBoardButton(); //
+    renderAddBoardButton(); 
 }
 
 function renderBoard (board){
@@ -150,7 +147,6 @@ function renderBoard (board){
 
     const taskContainer = boardDiv.querySelector(".task-container");
 
-    // board.tasks just as board.id is from the json
     board.tasks.forEach(task => {
         taskContainer.appendChild(renderBoardTask(task));
     });
@@ -161,11 +157,10 @@ function renderBoard (board){
 function renderBoardTask(task) {
     const card = document.createElement("div");
     card.className = "task-card";
-    card.dataset.id = task.id;  `task-${task.id}`;  // 'task-' prefix to avoid numeric only Id (that might be tricky with CSS selectors)
+    card.dataset.id = task.id;  //`task-${task.id}`;  'task-' prefix to avoid numeric only Id (that might be tricky with CSS selectors)
 
     if (task.completed === 1) {
         card.classList.add("completed");
-        //   console.log("hehh")
     }
 
     card.innerHTML = `
@@ -192,58 +187,3 @@ function renderAddBoardButton(){
     boardContainer.appendChild(btn);
 }
 
-
-
-// export function renderBoards(tasks) {
-//     const container = document.getElementById("board-container");
-//     container.innerHTML = "";
-
-//     // group tasks by category
-//     const grouped = {};
-
-//     tasks.forEach(task => {
-//         if (!grouped[task.category]) {
-//             grouped[task.category] = [];
-//         }
-//         grouped[task.category].push(task);
-//     });
-
-//     // create column per category
-//     Object.entries(grouped).forEach(([category, categoryTasks]) => {
-
-//         const column = document.createElement("div");
-//         column.classList.add("column");
-
-//         const title = document.createElement("div");
-//         title.classList.add("column-title");
-//         title.textContent = category;
-
-//         column.appendChild(title);
-
-//         categoryTasks.forEach(task => {
-//             column.appendChild(createTaskCard(task));
-//         });
-
-//         container.appendChild(column);
-//     });
-// }
-
-// function createTaskCard(task) {
-//     const card = document.createElement("div");
-//     card.classList.add("task-card");
-//     card.dataset.id = task.id;
-
-//     if (task.completed) {
-//         card.classList.add("completed");
-//     }
-
-//     card.innerHTML = `
-//         <div class="task-info">
-//             <span>${task.text}</span>
-//         </div>
-//         <button class="delete-btn">X</button>
-//         <input type="checkbox" class="complete-checkbox" ${task.completed ? "checked" : ""}>
-//     `;
-
-//     return card;
-// }

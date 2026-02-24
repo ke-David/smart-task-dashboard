@@ -1,8 +1,5 @@
-body {
-    /* font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 40px auto; */
 
+body {
     margin: 0;
     font-family: Arial, sans-serif;
     height: 100vh;
@@ -13,7 +10,7 @@ body {
 }
 
 .topbar {
-    height: 80px;               /* narrow */
+    height: 80px;               
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -22,7 +19,6 @@ body {
     background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    /* border-bottom: 1px solid #ddd; */
     border-bottom: 1px solid rgba(255,255,255,0.3);
     
     flex-shrink: 0;
@@ -84,29 +80,6 @@ li {
     background: rgba(0,0,0,0.9);
 }
 
-/* #floating-nav {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-    z-index: 1000;
-}
-
-.nav-btn {
-    padding: 10px 14px;
-    border-radius: 999px;
-    background: #222;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-}
-
-.nav-btn:hover {
-    background: #444;
-} */
-
 .task-item {
     display: flex;
     gap: 10px;
@@ -119,20 +92,17 @@ li {
 }
 
 /* overlay */
-
 #overlay-root {
     position: fixed;
-    inset: 0;   /* top, left, rith, bottom = 0 */
+    inset: 0;   
     pointer-events: none;   /* overlay does not block clicks by the user */
     z-index: 9999;
 }
 
 /* celebration */
- 
 .hidden {
     display: none;  /* the element not rendered at all */
     /* opacity: 0;*/  /* even if i dont see it, it is rendered every single time */
-    /* pointer-events: none; */
 }
 
 @keyframes slideDown {
@@ -159,81 +129,7 @@ li {
     padding: 15px 25px;
     font-weight: bold;
     border-radius: 8px;
-    /* z-index: 1000;    appears above everything */
-    /* animation: slideDown 1.0s ease; */
-    /* animation-fill-mode: forwards; */
 }
-
-/* #meme-overlay {
-    position: fixed;
-    top: 80px;
-    bottom: 10px;
-    transform: translate(50%, 0) scale(0.6);
-    width: 700px;
-    opacity: 0;
-    /* z-index: 9998; */
-    /* pointer-events: none; 
-} */
-
-/* @keyframes memeFade {
-    0% {
-        opacity: 0;
-        transform: scale(0.6);
-    }
-    15% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    70% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1.2);
-    }
-} */
-
-/* @keyframes memeFade {
-    0% {
-        opacity: 0;
-        transform: translate(40%, 0) scale(0.6);
-    }
-
-    20% {
-        opacity: 0.75;
-        transform: translate(40%, 0) scale(0.8);
-    }
-
-    50% {
-        opacity: 0.85;
-        transform: translate(40%, 0) scale(1);
-    }
-
-    70% {
-        opacity: 1;
-        transform: translate(40%, 0) scale(1.2);
-    }
-
-    80% {
-        opacity: 1;
-        transform: translate(40%, 0) scale(0.85);
-    }
-
-    90% {
-        opacity: 0.5;
-        transform: translate(40%, 0) scale(0.65);
-    }
-
-    100% {
-        opacity: 0;
-        transform: translate(50%, 0) scale(0.45);
-    }
-} */
-
-
-/* .show-meme {
-    animation: memeFade 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-} */
 
 #meme-overlay {
     position: fixed;
@@ -284,7 +180,6 @@ li {
 }
 
 /* toggle switch */
-
 .settings-row {
     display: flex;
     align-items: center;
@@ -318,7 +213,7 @@ li {
 }
 
 /* slider circle */
-.slider::before {   /* Create a virtual element before the content inside .slider, i cant see it in html but css can style it somehow */
+.slider::before {   /* Create a virtual element before the content inside .slider, i cant see it in html but css can still style it */
     content: "";
     position: absolute;
     height: 20px;
@@ -342,7 +237,6 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
 .toggle-label {
     font-size: 14px;
 }
-
 
 
 #add-board-btn {
@@ -380,26 +274,13 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
     transition: 0.2s;
 }
 
-/* #boards-wrapper {
-    overflow-x: auto;
-    display: flex;
-    padding: 20px;
-} */
-
 /* Main area fills remaining space */
 #boards-wrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
-    /* background: url("/static/pictures/wallpaper.png") center / cover no-repeat; */
     overflow: hidden;
 }
-
-/* #board-container {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-} */
 
 /* Board container (horizontal scroll layout) */
 #board-container {
@@ -413,7 +294,7 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
     scroll-behavior: smooth;
 }
 
-/* Each board */
+/* each board */
 .board {
     width: 280px;
     min-width: 280px;
@@ -477,16 +358,13 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
     flex-direction: column;
     gap: 3px;
 
-    /* max-height: 340px; tweak = ~6 cards */
     flex: 1;
     overflow-y: auto;
     padding-right: 4px;
-    /* height: 100%; */
     min-height: 0; 
 }
 
 /* Task card */
-
 .add-task-btn{
     min-width: 80px;
     border: 2px dashed #ccc;
@@ -524,7 +402,6 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
 }
 
 .task-text {
-    /* display: block; */
     max-width: 160px;
 
     white-space: nowrap;
@@ -559,7 +436,6 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
 
 /* Text container */
 .task-info {
-    /* flex-grow: 1; */
     display: flex;
     align-items: center;
     gap: 6px;
@@ -577,7 +453,7 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
 }
 
 .complete-checkbox {
-    margin-left: auto; /* tolja el a checkboxot és a gombot jobbra */
+    margin-left: auto; /* to push the checkbox and button to the right */
     cursor: pointer;
 }
 
@@ -595,8 +471,6 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
     width: 100%;
     box-sizing: border-box;
 }
-
-
 
 .tooltip {
   position: relative;
@@ -624,10 +498,6 @@ input:checked + .slider::before {   /* when checkbox is checked, select the slid
   visibility: visible;
 }
 
-
-/* .hidden {
-    display: none;
-} */
 
 #soft-confirm-overlay.hidden {
     display: none;

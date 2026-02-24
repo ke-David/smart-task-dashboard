@@ -41,7 +41,7 @@ def get_db_connection():
     conn = sqlite3.connect("backend/data/tasks.db")
     conn.row_factory = sqlite3.Row
 
-    # i have to enable it every time a new connection starts
+    # i have to enable it every time a new connection starts in order to foreign key session start for cascade delete
     conn.execute("PRAGMA foreign_keys = ON;")
 
     return conn
@@ -65,16 +65,6 @@ def get_tasks():
         c.execute('SELECT id, text, category, completed, board_id, created_at FROM tasks')
         rows = c.fetchall()
         conn.close()
-
-        # tasks = []
-        # for row in c.fetchall():
-        #     task = {
-        #         'id': row[0],
-        #         'text': row[1],
-        #         'category': row[2],
-        #         'completed': row[3]
-        #     }
-        #     tasks.append(task)
 
         tasks = [{'id': row[0], 'text': row[1], 'category': row[2], 'completed': row[3], 'boardId': row[4], 'created_at': row[5]} for row in rows]
 
@@ -111,7 +101,7 @@ def add_task():
         conn.commit()
         conn.close()
 
-        return jsonify({'id': task_id, 'text': text, 'category': category, 'completed': False, 'boardId': boardId}), 201    # OK, POST created a task
+        return jsonify({'id': task_id, 'text': text, 'category': category, 'completed': False, 'boardId': boardId}), 201   
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -126,10 +116,6 @@ def update_task(task_id):
     if "completed" not in data:
         return jsonify({"error": "Missing completed status"}), 400
     
-    # if not data or "completed" not in data:
-    #     return jsonify({"error": "Missing completed field"}), 400
-
-    #    completed = 1 if data["completed"] else 0
 
     if data["completed"]:
         completed = 1  
@@ -160,10 +146,10 @@ def delete_task(task_id):
         c.execute('Delete From tasks Where id = ?', (task_id, ))    # (task_id, ) must be tuple, execute() expects a string + tuple or list
         if c.rowcount == 0:
             conn.close()
-            return jsonify({'error': 'Task not found'}), 404    # error, task ID not found
+            return jsonify({'error': 'Task (id) not found'}), 404  
         conn.commit()
         conn.close()
-        return jsonify({'message': 'Task deleted'}), 200  # OK, DELETE success
+        return jsonify({'message': 'Task deleted'}), 200 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -173,23 +159,15 @@ def get_stats():
     try:
         conn = get_db_connection()
         c = conn.cursor()
+        # to get how many tasks there are by category
         c.execute('Select category, Count(*) as count From tasks Group By category')
         rows = c.fetchall()
         
-        # to show how many tasks there are per category
-        # tasks_by_category = {row["category"]: row["count"] for row in rows}    #or row[0] and row[1]
-        # tasks_by_category = []
-        # for row in rows:
-            # task = {
-            #     row[0]: row[1],
-            # }
-            # tasks_by_category.append(task)    # wrong because beckend should NOT send an array back, but an object
-
         tasks_by_category = {}
         for row in rows:
             tasks_by_category[row["category"]] = row["count"]
         
-        # to show how many active vs completed tasks there are
+        # to get how many active vs completed tasks there are
         c.execute('Select completed, Count(*) as count From tasks Group By completed')
         rows = c.fetchall()
         completed_vs_active = {
@@ -203,7 +181,6 @@ def get_stats():
                 completed_vs_active['active'] = row[1]
 
         # to get timeline hero
-
         c.execute("""
             SELECT DATE(created_at) AS day, COUNT(*) AS count
             FROM tasks
@@ -328,7 +305,6 @@ def get_insithts():
         return jsonify({"error": str(e)}), 500
 
 
-
 @app.route("/boards", methods=["POST"])
 def add_board():
     data = request.get_json()
@@ -347,7 +323,7 @@ def add_board():
         conn.commit()
         conn.close()
 
-        return jsonify({'id': id, 'title': title}), 201    # OK, POST created a task
+        return jsonify({'id': id, 'title': title}), 201  
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
@@ -425,7 +401,7 @@ def delete_board_with_tasks(board_id):
         cur.execute("DELETE FROM boards WHERE id = ?", (board_id,))
         if cur.rowcount == 0:
             conn.close()
-            return jsonify({'error': 'Board not found'}), 404    # error, board ID not found
+            return jsonify({'error': 'Board (id) not found'}), 404    # error, board ID not found
         conn.commit()
         conn.close()
         return jsonify({'message': 'Task deleted'}), 200
@@ -434,19 +410,6 @@ def delete_board_with_tasks(board_id):
         return {"error": str(e)}, 500
 
 
-##  JSON
-
-# tasks = []    
-
-# @app.route('/tasks', methods=['GET'])
-# def get_tasks():
-#     return jsonify(tasks)
-
-# @app.route('/tasks', methods=['POST'])
-# def add_tasks():
-#     data = request.get_json()
-#     tasks.append(data)
-#     return jsonify(data), 201
 
 if __name__ == "__main__":
     init_db()
