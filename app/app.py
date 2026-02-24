@@ -38,7 +38,7 @@ def init_db():
 
 
 def get_db_connection():
-    conn = sqlite3.connect("backend/data/tasks.db")
+    conn = sqlite3.connect("app/data/tasks.db")
     conn.row_factory = sqlite3.Row
 
     # i have to enable it every time a new connection starts in order to foreign key session start for cascade delete
