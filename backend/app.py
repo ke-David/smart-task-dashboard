@@ -212,7 +212,7 @@ def get_summ():
         c.execute('''SELECT COUNT(*) AS total,
             SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) AS completed,
             SUM(CASE WHEN completed = 0 THEN 1 ELSE 0 END) AS active,
-            SUM(CASE WHEN category = "Critical" THEN 1 ELSE 0 END) AS critical
+            SUM(CASE WHEN category = "Critical" AND completed = 0 THEN 1 ELSE 0 END) AS critical
             FROM tasks''')
         row = c.fetchone()     #there's only one row
         conn.close()
