@@ -1,8 +1,8 @@
 # Smart Task Dashboard
 
-A lightweight web app for managing tasks and visualizing productivity insights.
+Smart Task Dashboard is a lightweight web app that allows users to manag tasks across boards and gain insights through a built-in analytics dashboard.
 
-This project was built to refresh and demonstrate end-to-end software development skills expected from a junior full-stack / backend / frontend developer: API design, database modeling, frontend rendering, and analytics visualization — all in one coherent app
+This project was built to refresh and demonstrate end-to-end software development skills expected from a junior full-stack / backend / frontend developer, covering frontend UI development, backend API design, database modeling, and data visualization — all in one coherent app.
 
 
 ## What the App Does
@@ -13,7 +13,7 @@ This project was built to refresh and demonstrate end-to-end software developmen
 - Persist data using a relational database
 - Visualize task analytics in a modern dashboard
 
-The application includes a Trello-like task page (Boards view) and a dedicated analytics page (Insights and trends view).
+The application includes a task page (Boards view) and a dedicated analytics page (Insights and trends view), similar to tools like Trello or Jira, but implemented from scratch.
 
 
 ## Project Goals

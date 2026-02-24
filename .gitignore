@@ -12,7 +12,7 @@ venv/
 
 #
 *.db
-backend/data/*.json
+app/data/*.json
 
 #
 .vscode/

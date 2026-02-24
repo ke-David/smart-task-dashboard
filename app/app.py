@@ -5,8 +5,8 @@ import sqlite3
 app = Flask(__name__)
 CORS(app)
 
-## DB SQLite
 
+# SQLite is used here for simplicity; PostgreSQL would be preferred in production
 def init_db():
     conn = get_db_connection()
     c = conn.cursor()
@@ -250,7 +250,7 @@ def get_insithts():
             ORDER BY active_count DESC
             LIMIT 1
         ''')
-        row = c.fetchone()     #there's only one row
+        row = c.fetchone()     
         heavy_board = row["title"] if row else None
         active_count = row["active_count"]
 
@@ -276,18 +276,6 @@ def get_insithts():
             FROM boards b
             LEFT JOIN tasks t ON b.id = t.board_id;
         ''')
-
-        #its the same, like the other avg, just different style
-        # c.execute('''
-        #     WITH stats AS (
-        #         SELECT 
-        #             COUNT(DISTINCT b.id) AS bid, 
-        #             COUNT(t.id) AS tid
-        #         FROM boards b
-        #         LEFT JOIN tasks t ON b.id = t.board_id
-        #     )
-        #     SELECT bid, tid, ROUND(tid * 1.0 / bid, 1) AS avg FROM stats;
-        # ''')
 
         row = c.fetchone()     
         avg = row["avg"] if row else None
