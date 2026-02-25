@@ -8,6 +8,12 @@ CORS(app)
 app.config.setdefault("DATABASE", "app/data/tasks.db")
 
 
+# i have to build a path leading to the db which works for both windows and linux (Render uses linux)
+data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data") 
+os.makedirs(data_dir, exist_ok=True)
+app.config["DATABASE"] = os.path.join(data_dir, "tasks.db")
+
+
 def get_db_connection():
     db_path = current_app.config["DATABASE"]
     conn = sqlite3.connect(db_path)
@@ -51,8 +57,10 @@ def init_db():
 
 
 # i have to run init_db during inport because in production the gunicorn doesnt execute the __main__
-with app.app_context():
-    init_db()
+# it only inicializes the db if it doesn't exist yet
+if not os.path.isfile(app.config["DATABASE"]):
+    with app.app_context():
+        init_db()
 
 
 @app.route("/")
@@ -413,4 +421,5 @@ if __name__ == "__main__":
     #     init_db()
 
     port = int(os.environ.get("PORT", 5000))
+    # '0.0.0.0' is necessary for Render
     app.run(host="0.0.0.0", port=port, debug=False)    
