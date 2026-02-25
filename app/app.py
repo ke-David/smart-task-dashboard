@@ -8,6 +8,17 @@ CORS(app)
 app.config.setdefault("DATABASE", "app/data/tasks.db")
 
 
+def get_db_connection():
+    db_path = current_app.config["DATABASE"]
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+
+    # i have to enable it every time a new connection starts in order to foreign key session start for cascade delete
+    conn.execute("PRAGMA foreign_keys = ON;")
+
+    return conn
+
+
 # SQLite is used here for simplicity; PostgreSQL would be preferred in production
 def init_db():
     conn = get_db_connection()
@@ -38,19 +49,10 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 # i have to run init_db during inport because in production the gunicorn doesnt execute the __main__
 with app.app_context():
     init_db()
-
-def get_db_connection():
-    db_path = current_app.config["DATABASE"]
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
-
-    # i have to enable it every time a new connection starts in order to foreign key session start for cascade delete
-    conn.execute("PRAGMA foreign_keys = ON;")
-
-    return conn
 
 
 @app.route("/")
