@@ -39,6 +39,7 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 
 ### Database
 - SQLite (relational schema with foreign keys and cascade delete)
+- SQLite is used for simplicity; PostgreSQL would be preferred for production.
 
 ### Development & Tools
 - Git & GitHub
