@@ -82,7 +82,7 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 
 ## Deployment
 
-The app is deployed on Render using a Flask web service and SQLite with persistent disk storage.
+The app is deployed on Render using a Flask web service and SQLite; database resets on redeploy.
 SQLite is used for simplicity; for production PostgreSQL database would be recommended.
 
 🔗 Live Demo: https://app.onrender.com
