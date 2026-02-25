@@ -3,7 +3,7 @@ const API_BASE = "http://127.0.0.1:5000";
 
 
 export async function deleteTask(taskId) {
-    const res = await fetch(`${API_BASE}/tasks/${taskId}`, {
+    const res = await fetch(`/tasks/${taskId}`, {
     method: "DELETE"
     });
 
@@ -14,7 +14,7 @@ export async function deleteTask(taskId) {
 }
 
 export async function loadTasks(){
-    const res = await fetch(`${API_BASE}/tasks`);
+    const res = await fetch(`/tasks`);
     
     if (!res.ok) {
         throw new Error("Failed to load tasks");
@@ -24,7 +24,7 @@ export async function loadTasks(){
 }
 
 export async function addTask(task) {
-    const res = await fetch(`${API_BASE}/tasks`, {
+    const res = await fetch(`/tasks`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(task)
@@ -36,7 +36,7 @@ export async function addTask(task) {
 }
 
 export async function markCompleted(taskId, completed){
-    const res = await fetch(`${API_BASE}/tasks/${taskId}`, {
+    const res = await fetch(`/tasks/${taskId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ completed })
@@ -48,7 +48,7 @@ export async function markCompleted(taskId, completed){
 }
 
 export async function loadAnalytics() {
-    const res = await fetch(`${API_BASE}/stats`);
+    const res = await fetch(`/stats`);
     
     if (!res.ok) {
         throw new Error("Failed to load analytics");
@@ -58,7 +58,7 @@ export async function loadAnalytics() {
 }
 
 export async function loadSum() {
-    const res = await fetch(`${API_BASE}/sum`);
+    const res = await fetch(`/sum`);
     
     if (!res.ok) {
         throw new Error("Failed to load summary");
@@ -68,7 +68,7 @@ export async function loadSum() {
 }
 
 export async function loadInsights() {
-    const res = await fetch(`${API_BASE}/insights`);
+    const res = await fetch(`/insights`);
     
     if (!res.ok) {
         throw new Error("Failed to load insights");
@@ -78,7 +78,7 @@ export async function loadInsights() {
 }
 
 export async function loadBoards() {
-    const res = await fetch(`${API_BASE}/boards`);
+    const res = await fetch(`/boards`);
 
     if (!res.ok) throw new Error("Failed to load boards");
 
@@ -86,7 +86,7 @@ export async function loadBoards() {
 }
 
 export async function addBoard(title) {
-    const res = await fetch(`${API_BASE}/boards`, {
+    const res = await fetch(`/boards`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title })
@@ -96,7 +96,7 @@ export async function addBoard(title) {
 }
 
 export async function loadBoardTasks() {
-    const res = await fetch(`${API_BASE}/boardTasks`);
+    const res = await fetch(`/boardTasks`);
 
     if (!res.ok) throw new Error("Failed to load boardTasks");
 
