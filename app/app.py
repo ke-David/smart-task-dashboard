@@ -38,6 +38,9 @@ def init_db():
     conn.commit()
     conn.close()
 
+# i have to run init_db during inport because in production the gunicorn doesnt execute the __main__
+with app.app_context():
+    init_db()
 
 def get_db_connection():
     db_path = current_app.config["DATABASE"]
@@ -404,8 +407,8 @@ def delete_board_with_tasks(board_id):
 
 
 if __name__ == "__main__":
-    with app.app_context():
-        init_db()
+    # with app.app_context():
+    #     init_db()
 
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)    
