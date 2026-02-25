@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, current_app
 from flask_cors import CORS
 import sqlite3
 
 app = Flask(__name__)
 CORS(app)
+app.config.setdefault("DATABASE", "app/data/tasks.db")
 
 
 # SQLite is used here for simplicity; PostgreSQL would be preferred in production
@@ -38,7 +39,8 @@ def init_db():
 
 
 def get_db_connection():
-    conn = sqlite3.connect("app/data/tasks.db")
+    db_path = current_app.config["DATABASE"]
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
 
     # i have to enable it every time a new connection starts in order to foreign key session start for cascade delete
@@ -80,10 +82,11 @@ def add_task():
     if not data:
         return jsonify({"error": "Missing JSON body"}), 400
 
-    text = data.get("text", "").strip()
+    text = data.get("text", "").strip() 
     category = data.get("category", "").strip()
     boardId = data.get("boardId")
 
+    # strip() removes space, so the if will recognize it as empty
     if not text:
         return jsonify({"error": "Task text is empty"}), 400
     
@@ -252,7 +255,7 @@ def get_insithts():
         ''')
         row = c.fetchone()     
         heavy_board = row["title"] if row else None
-        active_count = row["active_count"]
+        active_count = row["active_count"] if row else 0
 
         # category with the most tasks, percentage of it; so which one is the most frequent/dominant category and what is its relative share
         c.execute('''
@@ -266,8 +269,8 @@ def get_insithts():
         ''')
 
         row = c.fetchone()     #there's only one row
-        dominantCategory = row["category"] if row else None
-        percentage = row["percentage"]
+        dominantCategory = row["category"] if row else None # to handle empty db
+        percentage = row["percentage"] if row else 0
 
         # average tasks per board; "(t.id) * 1.0 " bc otherwise it will be integer, not float
         c.execute('''
@@ -400,5 +403,7 @@ def delete_board_with_tasks(board_id):
 
 
 if __name__ == "__main__":
-    init_db()
+    with app.app_context():
+        init_db()
+
     app.run(debug=True)

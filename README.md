@@ -99,6 +99,12 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 - Using Git and feature branches for development
 
 
+## Testing
+
+The project uses pytest with an isolated SQLite test DB.
+Each test run creates a temporary database, initializes the schema, and cleans up automatically to ensure test isolation.
+
+
 ## Project Structure
 
 "tree /f"
