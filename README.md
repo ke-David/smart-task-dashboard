@@ -83,12 +83,18 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 ## Screenshots
 
 ### Board View
-![Board View](screenshots/boards_view.png)
-![Board View](screenshots/marked_complete_celebration.png)
+<p align="center">
+  <img src="screenshots/boards_view.png" width="45%" style="border-radius: 15px;">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="screenshots/marked_complete_celebration.png" width="45%">
+</p>
 
 ### Analytics Dashboard
-![Analytics](screenshots/timeline_chart.png)
-![Analytics](screenshots/analytics_charts_insight_cards.png)
+<p align="center">
+  <img src="screenshots/timeline_chart.png" width="45%">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="screenshots/analytics_charts_insight_cards.png" width="45%">
+</p>
 
 *More screenshots available in the [screenshots folder](screenshots/)*
 
