@@ -107,8 +107,7 @@ Each test run creates a temporary database, initializes the schema, and cleans u
 
 ## Project Structure
 
-"tree /f"
-
+```
 C:.
 │   .gitignore
 │   README.md
@@ -154,7 +153,7 @@ C:.
 │       demo.gif
 │
 └───venv
-
+```
 
 ## How to Run Locally
 
