@@ -82,8 +82,16 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 
 ## Screenshots
 
-![Task Boards](docs/boards.png)
-![Analytics Dashboard](docs/analytics.png)
+### Board View
+![Board View](screenshots/boards_view.png)
+![Board View](screenshots/marked_complete_celebration.png)
+
+### Analytics Dashboard
+![Analytics](screenshots/timeline_chart.png)
+![Analytics](screenshots/analytics_charts_insight_cards.png)
+
+*More screenshots available in the [screenshots folder](screenshots/)*
+
 
 🎥 Demo Video: https://youtu.be/link
 
