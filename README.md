@@ -80,14 +80,6 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 - Consistent JSON responses
 
 
-## Deployment
-
-The app is deployed on Render using a Flask web service and SQLite; database resets on redeploy.
-SQLite is used for simplicity; for production PostgreSQL database would be recommended.
-
-🔗 Live Demo: https://app.onrender.com
-
-
 ## Screenshots
 
 ### Board View
@@ -110,6 +102,14 @@ SQLite is used for simplicity; for production PostgreSQL database would be recom
 ## Demo Video 
 
 *▶Watch the video:* [https://www.youtube.com/watch?v=Xt_Q093l_sQ](https://www.youtube.com/watch?v=Xt_Q093l_sQ)
+
+
+## Deployment
+
+The app is deployed on Render using a Flask web service and SQLite; database resets on redeploy.
+SQLite is used for simplicity; for production PostgreSQL database would be recommended.
+
+🔗 Live Demo: https://app.onrender.com
 
 
 ## What I learned
@@ -219,6 +219,7 @@ Open http://127.0.0.1:5000/home in your browser.
 - User accounts & authentication
 - Ppriority prediction and advanced analytics using basic ML
 - Exporting charts
+
 
 ## Notes
 
