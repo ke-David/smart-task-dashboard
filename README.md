@@ -107,7 +107,9 @@ SQLite is used for simplicity; for production PostgreSQL database would be recom
 *More screenshots available in the [screenshots folder](screenshots/)*
 
 
-🎥 Demo Video: https://youtu.be/link
+## Demo Video 
+
+*▶Watch the video:* [https://www.youtube.com/watch?v=Xt_Q093l_sQ](https://www.youtube.com/watch?v=Xt_Q093l_sQ)
 
 
 ## What I learned
