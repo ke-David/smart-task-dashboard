@@ -109,8 +109,7 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 The app is deployed on Render using a Flask web service and SQLite; database resets on redeploy.
 SQLite is used for simplicity; for production PostgreSQL database would be recommended.
 
-🔗 Live Demo: https://app.onrender.com
-
+🔗 Live Demo: [https://smart-task-dashboard.onrender.com](https://smart-task-dashboard.onrender.com/)
 
 ## What I learned
 
