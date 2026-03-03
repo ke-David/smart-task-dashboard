@@ -2,7 +2,7 @@
 
 Smart Task Dashboard is a lightweight web app that allows users to manag tasks across boards and gain insights through a built-in analytics dashboard.
 
-This project was built to refresh and demonstrate end-to-end software development skills expected from a junior full-stack / backend / frontend developer, covering frontend UI development, backend API design, database modeling, and data visualization — all in one coherent app.
+This project was built to refresh and demonstrate end-to-end software development skills expected from a junior full-stack / backend / frontend developer, covering frontend UI development, backend API design, database modeling, and data visualization - all in one coherent app.
 
 
 ## What the App Does
@@ -22,7 +22,7 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 - Practice frontend ↔ backend communication
 - Design a small but complete REST API
 - Work with relational databases, SQL aggregations and analytics
-- Apply Git and GitHub workflows and project structure practices
+- Apply Git and GitHub workflows
 
 
 ## Technologies Used
@@ -63,7 +63,7 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 
 ### Analytics Dashboard
 - Total tasks, active tasks, completion rate
-- Critical task counter (alert-style UI)
+- Critical task counter
 - Tasks per category (bar chart)
 - Active vs completed tasks (pie chart)
 - Task creation activity over time (hero timeline chart)
@@ -74,9 +74,8 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 - REST API with aggregated endpoints 
     (e.g. `GET /stats` - Return chart data; `DELETE /boards/<id>` - Remove board with all its tasks)
 - Safe SQL queries and joins
-- Modular frontend rendering
-- Event delegation and chart lifecycle management
-- Defensive programming (validation, try/catch), error handling
+- Event delegation
+- Defensive programming (validation, try/catch), error handling, tests
 - Consistent JSON responses
 
 
@@ -106,10 +105,10 @@ The application includes a task page (Boards view) and a dedicated analytics pag
 
 ## Deployment
 
-The app is deployed on Render using a Flask web service and SQLite; database resets on redeploy.
+The app is deployed on Render using a Flask web service and SQLite; database resets after closing the page (free plan on Render).
 SQLite is used for simplicity; for production PostgreSQL database would be recommended.
 
-🔗 Live Demo: [https://smart-task-dashboard.onrender.com](https://smart-task-dashboard.onrender.com/)
+*🔗 Live Demo:* [https://smart-task-dashboard.onrender.com](https://smart-task-dashboard.onrender.com/)
 
 ## What I learned
 
@@ -222,6 +221,6 @@ Open http://127.0.0.1:5000/home in your browser.
 
 ## Notes
 
-This project is intentionally kept framework-light to highlight core concepts, not library overdose.
+This project is intentionally kept framework-light to highlight core concepts.
 
  
